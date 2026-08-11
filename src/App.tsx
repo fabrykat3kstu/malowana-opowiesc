@@ -3,7 +3,7 @@ import {
   Baby, Sparkles, Rocket, TreePine, Fish, Castle,
   Heart, Shield, Wand2, ChevronRight,
   ChevronLeft, Coins, Printer, ArrowLeft, Paintbrush, AlertCircle,
-  Star, Droplets, Map, BookOpen, Flame, Feather, Lock, Check, X, ShieldCheck
+  Star, Droplets, Map, BookOpen, Flame, Feather, Lock, Check, X, ShieldCheck, RefreshCw
 } from "lucide-react";
 import StripeCheckoutSimulator from "./components/StripeCheckoutSimulator";
 import { ARCHETYPES, WORLDS, MORALS } from "./data";
@@ -292,29 +292,57 @@ export default function App() {
     const activeSeed = targetSeed !== undefined ? targetSeed : seed;
 
     try {
-      const response = await fetch("/api/generate-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: promptText, seed: activeSeed })
-      });
+      let isDone = false;
+      let currentPredictionId: string | undefined = undefined;
+      let attempts = 0;
+      let outputUrl = "";
 
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || "Błąd podczas rysowania ilustracji.");
+      while (!isDone && attempts < 15) {
+        attempts++;
+        const response = await fetch("/api/generate-image", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            prompt: promptText, 
+            seed: activeSeed, 
+            predictionId: currentPredictionId 
+          })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error || "Błąd podczas rysowania ilustracji.");
+        }
+
+        const data = await response.json();
+        if (data.status === "succeeded") {
+          outputUrl = data.output;
+          isDone = true;
+        } else if (data.status === "pending") {
+          currentPredictionId = data.predictionId;
+          // Poczekaj 1 sekundę przed kolejnym zapytaniem
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        } else {
+          // Kompatybilność wsteczna z bezpośrednim zwracaniem output
+          if (data.output) {
+            outputUrl = data.output;
+            isDone = true;
+          } else {
+            throw new Error(data.error || "Nieoczekiwana odpowiedź serwera.");
+          }
+        }
       }
 
-      const data = await response.json();
-      if (data.output) {
+      if (outputUrl) {
         setImagesMap(prev => {
-          const updated = { ...prev, [pageIdx]: data.output };
-          // Persist to localStorage/history
+          const updated = { ...prev, [pageIdx]: outputUrl };
           if (activeStoryId && story) {
             saveOrUpdateStory(activeStoryId, story, preferences, updated, unlockedPages, activeSeed);
           }
           return updated;
         });
       } else {
-        throw new Error("Niepoprawny format danych ilustracji.");
+        throw new Error("Przekroczono limit czasu oczekiwania na ilustrację.");
       }
     } catch (e: any) {
       console.error(e);
@@ -400,6 +428,19 @@ export default function App() {
     addCreditsClient(creditsAdded);
     showToast(`Dodano pomyślnie ${creditsAdded} ${creditsAdded === 1 ? "bajkę" : [2, 3, 4].includes(creditsAdded % 10) && ![12, 13, 14].includes(creditsAdded) ? "bajki" : "bajek"}!`);
     setShowStripeModal(false);
+  };
+
+  const handleRetryAllFailed = () => {
+    setImageErrorsMap(prev => {
+      const updated = { ...prev };
+      story?.pages.forEach((_, idx) => {
+        if (unlockedPages[idx] && !imagesMap[idx]) {
+          delete updated[idx];
+        }
+      });
+      return updated;
+    });
+    showToast("Wznowiono rysowanie brakujących ilustracji...");
   };
 
   const getCoverTheme = () => {
@@ -1158,35 +1199,51 @@ export default function App() {
                   >
                     <ArrowLeft className="w-3.5 h-3.5" /> Pulpit
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (unlockedCount < 15) {
-                        handleUnlockBookAndNavigate();
-                      } else if (isAllImagesLoaded) {
-                        window.print();
-                      }
-                    }}
-                    disabled={unlockedCount === 15 && !isAllImagesLoaded}
-                    className={`flex-1 py-3 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all font-sans ${
-                      (unlockedCount < 15 || isAllImagesLoaded)
-                        ? "bg-[#6B705C] hover:bg-[#585c4b] text-white cursor-pointer hover:scale-[1.01] active:scale-[0.99] shadow-sm" 
-                        : "bg-[#E5E5E1] text-[#9A9A92] cursor-not-allowed animate-pulse"
-                    }`}
-                  >
-                    {(unlockedCount < 15 || isAllImagesLoaded) ? (
+                  {unlockedCount < 15 ? (
+                    <button
+                      type="button"
+                      onClick={() => handleUnlockBookAndNavigate()}
+                      className="flex-1 py-3 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all font-sans bg-[#6B705C] hover:bg-[#585c4b] text-white cursor-pointer hover:scale-[1.01] active:scale-[0.99] shadow-sm"
+                    >
                       <Printer className="w-3.5 h-3.5" />
-                    ) : (
+                      <span>Pobierz pełny plik PDF (15 str.) 🔒</span>
+                    </button>
+                  ) : isAllImagesLoaded ? (
+                    <button
+                      type="button"
+                      onClick={() => window.print()}
+                      className="flex-1 py-3 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all font-sans bg-[#6B705C] hover:bg-[#585c4b] text-white cursor-pointer hover:scale-[1.01] active:scale-[0.99] shadow-sm"
+                    >
+                      <Printer className="w-3.5 h-3.5" />
+                      <span>Pobierz książeczkę ({unlockedCount} str. PDF)</span>
+                    </button>
+                  ) : Object.values(loadingImagesMap).some(v => v === true) ? (
+                    <button
+                      type="button"
+                      disabled
+                      className="flex-1 py-3 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 bg-[#E5E5E1] text-[#9A9A92] cursor-not-allowed animate-pulse font-sans"
+                    >
                       <div className="w-3.5 h-3.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin shrink-0"></div>
-                    )}
-                    <span>
-                      {unlockedCount < 15 
-                        ? "Pobierz pełny plik PDF (15 str.) 🔒" 
-                        : isAllImagesLoaded 
-                          ? `Pobierz książeczkę (${unlockedCount} str. PDF)` 
-                          : `Rysowanie ilustracji (${loadedImagesCount}/${unlockedCount})...`}
-                    </span>
-                  </button>
+                      <span>Rysowanie ilustracji ({loadedImagesCount}/{unlockedCount})...</span>
+                    </button>
+                  ) : (
+                    <div className="flex-1 flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => window.print()}
+                        className="flex-1 py-3 bg-white border border-[#E5E5E1] text-[#6B705C] text-xs font-bold rounded-xl flex items-center justify-center gap-1 hover:bg-[#FAF9F6] cursor-pointer font-sans"
+                      >
+                        <Printer className="w-3 h-3" /> Drukuj mimo to
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleRetryAllFailed}
+                        className="flex-1 py-3 bg-[#D4A373] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1 hover:bg-[#c59262] cursor-pointer animate-pulse font-sans"
+                      >
+                        <RefreshCw className="w-3 h-3 animate-spin" style={{ animationDuration: '4s' }} /> Narysuj brakujące ({unlockedCount - loadedImagesCount})
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 

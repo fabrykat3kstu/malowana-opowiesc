@@ -125,55 +125,58 @@ Crucial Visual Quality Guidelines:
 // Endpoint 2: Replicate (model Flux Schnell) - Generowanie obrazków wektorowych
 app.post("/api/generate-image", async (req, res) => {
   try {
-    const { prompt, seed } = req.body;
-    if (!prompt) {
-      return res.status(400).json({ error: "Brak promptu graficznego." });
-    }
-
+    const { prompt, seed, predictionId } = req.body;
+    
     const replicateToken = process.env.REPLICATE_API_TOKEN;
     if (!replicateToken) {
       return res.status(500).json({ error: "Brak tokenu REPLICATE_API_TOKEN w konfiguracji serwera." });
     }
 
-    // 1. Utworzenie predykcji
-    const response = await fetch("https://api.replicate.com/v1/models/black-forest-labs/flux-schnell/predictions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Token ${replicateToken}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        input: {
-          prompt: prompt,
-          aspect_ratio: "3:4",
-          seed: seed ? Number(seed) : undefined,
-          num_outputs: 1,
-          output_format: "png"
-        }
-      })
-    });
+    let currentPrediction;
+    let predictionIdToPoll = predictionId;
 
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`Błąd tworzenia predykcji Replicate: ${errText}`);
+    if (!predictionIdToPoll) {
+      if (!prompt) {
+        return res.status(400).json({ error: "Brak promptu graficznego." });
+      }
+
+      // 1. Utworzenie predykcji
+      const response = await fetch("https://api.replicate.com/v1/models/black-forest-labs/flux-schnell/predictions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Token ${replicateToken}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          input: {
+            prompt: prompt,
+            aspect_ratio: "3:4",
+            seed: seed ? Number(seed) : undefined,
+            num_outputs: 1,
+            output_format: "png"
+          }
+        })
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Błąd tworzenia predykcji Replicate: ${errText}`);
+      }
+
+      currentPrediction = await response.json();
+      predictionIdToPoll = currentPrediction.id;
     }
 
-    const prediction = await response.json();
-    const predictionId = prediction.id;
-
-    // 2. Polling (odpytywanie o status co 500ms)
-    let status = prediction.status;
-    let currentPrediction = prediction;
-    const maxRetries = 40; // maksymalnie 20 sekund (40 * 500ms)
-    let retries = 0;
+    // 2. Polling (odpytywanie o status dla max 7 sekund w celu uniknięcia limitu 10s na Vercel)
+    let status = currentPrediction ? currentPrediction.status : "starting";
+    const startTime = Date.now();
     let consecutiveErrors = 0;
 
-    while (status !== "succeeded" && status !== "failed" && status !== "canceled" && retries < maxRetries) {
+    while (status !== "succeeded" && status !== "failed" && status !== "canceled" && (Date.now() - startTime) < 7000) {
       await new Promise(resolve => setTimeout(resolve, 500));
-      retries++;
 
       try {
-        const pollResponse = await fetch(`https://api.replicate.com/v1/predictions/${predictionId}`, {
+        const pollResponse = await fetch(`https://api.replicate.com/v1/predictions/${predictionIdToPoll}`, {
           headers: {
             "Authorization": `Token ${replicateToken}`
           }
@@ -206,12 +209,15 @@ app.post("/api/generate-image", async (req, res) => {
     if (status === "succeeded") {
       const outputUrl = currentPrediction.output?.[0];
       if (outputUrl) {
-        return res.json({ output: outputUrl });
+        return res.json({ status: "succeeded", output: outputUrl });
       } else {
         throw new Error("Brak linku wyjściowego w udanej predykcji.");
       }
-    } else {
+    } else if (status === "failed" || status === "canceled") {
       throw new Error(`Predykcja nie powiodła się. Status: ${status}`);
+    } else {
+      // Wciąż w trakcie - zwracamy status pending i id sesji do kontynuacji w kolejnym zapytaniu
+      return res.json({ status: "pending", predictionId: predictionIdToPoll });
     }
 
   } catch (error: any) {
