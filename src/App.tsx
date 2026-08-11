@@ -1283,6 +1283,9 @@ export default function App() {
                   src={imagesMap[idx]} 
                   alt="" 
                   loading="eager" 
+                  onError={() => {
+                    handleImageFailure(idx, "Ilustracja wygasła w tle lub nie udało się jej pobrać.");
+                  }}
                 />
               );
             }
