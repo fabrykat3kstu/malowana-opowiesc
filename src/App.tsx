@@ -115,14 +115,46 @@ export default function App() {
     });
   };
 
+  const addCreditsClient = (amount: number) => {
+    const localCreditsStr = localStorage.getItem("malowana_opowiesc_credits") || "0";
+    const newCredits = Number(localCreditsStr) + amount;
+    localStorage.setItem("malowana_opowiesc_credits", newCredits.toString());
+    setCredits(newCredits);
+    // Background sync
+    fetch("/api/credits/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount })
+    }).catch(console.error);
+    return newCredits;
+  };
+
+  const consumeCreditClient = () => {
+    const localCreditsStr = localStorage.getItem("malowana_opowiesc_credits") || "0";
+    const currentCredits = Number(localCreditsStr);
+    if (currentCredits > 0) {
+      const newCredits = currentCredits - 1;
+      localStorage.setItem("malowana_opowiesc_credits", newCredits.toString());
+      setCredits(newCredits);
+      // Background sync
+      fetch("/api/credits/consume", { method: "POST" }).catch(console.error);
+      return true;
+    }
+    return false;
+  };
+
   const fetchCredits = async () => {
     try {
       setLoadingCredits(true);
-      const res = await fetch("/api/credits");
-      if (res.ok) {
-        const data = await res.json();
-        setCredits(data.credits);
+      const localCreditsStr = localStorage.getItem("malowana_opowiesc_credits");
+      let currentCredits = 0;
+      if (localCreditsStr !== null) {
+        currentCredits = Number(localCreditsStr);
+      } else {
+        localStorage.setItem("malowana_opowiesc_credits", "0");
       }
+      setCredits(currentCredits);
+      await fetch("/api/credits");
     } catch (e) {
       console.error(e);
     } finally {
@@ -144,56 +176,39 @@ export default function App() {
       else if (pack === "6_stories") creditsToAdd = 6;
       else if (pack === "12_stories") creditsToAdd = 12;
 
-      const credsSuccess = async () => {
-        try {
-          const res = await fetch("/api/credits/add", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: creditsToAdd })
-          });
-          if (res.ok) {
-            const data = await res.json();
-            setCredits(data.credits);
-            showToast("Płatność udana! Twoje bajki zostały odblokowane 🌟");
-            
-            const stories = localStorage.getItem("malowana_opowiesc_stories");
-            if (stories) {
-              const parsedStories = JSON.parse(stories);
-              if (parsedStories.length > 0) {
-                const consumeRes = await fetch("/api/credits/consume", { method: "POST" });
-                if (consumeRes.ok) {
-                  const consumeData = await consumeRes.json();
-                  setCredits(consumeData.credits);
-                  
-                  const allUnlocked: Record<number, boolean> = {};
-                  for (let i = 0; i < 15; i++) {
-                    allUnlocked[i] = true;
-                  }
-                  
-                  const latestStory = parsedStories[0];
-                  latestStory.unlockedPages = allUnlocked;
-                  localStorage.setItem("malowana_opowiesc_stories", JSON.stringify(parsedStories));
-                  setSavedStories(parsedStories);
+      // Dodaj pomyślnie kredyty lokalnie
+      addCreditsClient(creditsToAdd);
+      showToast("Płatność udana! Twoje bajki zostały odblokowane 🌟");
 
-                  // Załaduj bajkę do widoku czytnika
-                  setStory(latestStory.story);
-                  setPreferences(latestStory.preferences);
-                  setImagesMap(latestStory.imagesMap);
-                  setSeed(latestStory.seed || 0);
-                  setUnlockedPages(allUnlocked);
-                  setActiveStoryId(latestStory.id);
-                  setCurrentPageIndex(0);
-                  setStep(5);
-                }
-              }
+      // Sprawdź czy możemy automatycznie odblokować najnowszą bajkę z historii
+      const stories = localStorage.getItem("malowana_opowiesc_stories");
+      if (stories) {
+        const parsedStories = JSON.parse(stories);
+        if (parsedStories.length > 0) {
+          const consumed = consumeCreditClient();
+          if (consumed) {
+            const allUnlocked: Record<number, boolean> = {};
+            for (let i = 0; i < 15; i++) {
+              allUnlocked[i] = true;
             }
-          }
-        } catch (error) {
-          console.error("Error confirming payment:", error);
-        }
-      };
+            
+            const latestStory = parsedStories[0];
+            latestStory.unlockedPages = allUnlocked;
+            localStorage.setItem("malowana_opowiesc_stories", JSON.stringify(parsedStories));
+            setSavedStories(parsedStories);
 
-      credsSuccess();
+            // Załaduj bajkę do widoku czytnika
+            setStory(latestStory.story);
+            setPreferences(latestStory.preferences);
+            setImagesMap(latestStory.imagesMap);
+            setSeed(latestStory.seed || 0);
+            setUnlockedPages(allUnlocked);
+            setActiveStoryId(latestStory.id);
+            setCurrentPageIndex(0);
+            setStep(5);
+          }
+        }
+      }
 
       const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
       window.history.replaceState({ path: cleanUrl }, "", cleanUrl);
@@ -332,18 +347,19 @@ export default function App() {
   }, [step, story, currentPageIndex, imagesMap, loadingImagesMap, imageErrorsMap, unlockedPages]);
 
   const handleUnlockBookAndNavigate = async (targetIdx?: number) => {
-    if (credits < 1) {
+    const localCreditsStr = localStorage.getItem("malowana_opowiesc_credits") || "0";
+    const currentCredits = Number(localCreditsStr);
+
+    if (currentCredits < 1) {
       setShowStripeModal(true);
       return;
     }
 
     try {
-      const res = await fetch("/api/credits/consume", { method: "POST" });
-      if (!res.ok) {
+      const consumed = consumeCreditClient();
+      if (!consumed) {
         throw new Error("Brak dostępnych bajek.");
       }
-      const data = await res.json();
-      setCredits(data.credits);
       
       // Odblokuj wszystkie strony od 0 do 14 (1 do 15)
       const allUnlocked: Record<number, boolean> = {};
@@ -366,23 +382,10 @@ export default function App() {
     }
   };
 
-  const handleStripeSuccess = async (creditsAdded: number) => {
-    try {
-      const res = await fetch("/api/credits/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: creditsAdded })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setCredits(data.credits);
-        showToast(`Dodano pomyślnie ${creditsAdded} ${creditsAdded === 1 ? "bajkę" : [2, 3, 4].includes(creditsAdded % 10) && ![12, 13, 14].includes(creditsAdded) ? "bajki" : "bajek"}!`);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setShowStripeModal(false);
-    }
+  const handleStripeSuccess = (creditsAdded: number) => {
+    addCreditsClient(creditsAdded);
+    showToast(`Dodano pomyślnie ${creditsAdded} ${creditsAdded === 1 ? "bajkę" : [2, 3, 4].includes(creditsAdded % 10) && ![12, 13, 14].includes(creditsAdded) ? "bajki" : "bajek"}!`);
+    setShowStripeModal(false);
   };
 
   const getCoverTheme = () => {
