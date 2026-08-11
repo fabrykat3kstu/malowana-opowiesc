@@ -1087,7 +1087,52 @@ export default function App() {
             );
           })()}
 
-          {step === 5 && story && (
+          {step === 5 && story && unlockedCount === 15 && !isAllImagesLoaded ? (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] w-full max-w-[450px] bg-white rounded-2xl shadow-2xl p-8 border border-[#E5E5E1] text-center space-y-6 animate-fadeIn print:hidden">
+              <div className="relative w-20 h-20 flex items-center justify-center mx-auto">
+                <div className="absolute inset-0 border-4 border-[#D4A373]/20 border-t-[#D4A373] rounded-full animate-spin"></div>
+                <Sparkles className="w-8 h-8 text-[#D4A373] animate-pulse" />
+              </div>
+              
+              <div className="space-y-2">
+                <h2 className="font-serif text-2xl font-black text-slate-800">
+                  Czarujemy Twoją bajkę...
+                </h2>
+                <p className="font-serif text-xs italic text-[#9A9A92] leading-relaxed max-w-[280px] mx-auto">
+                  Trwa rysowanie i przygotowywanie ilustracji do druku. Za chwilę otworzymy gotową książeczkę!
+                </p>
+              </div>
+
+              <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200">
+                <div 
+                  className="bg-[#D4A373] h-full transition-all duration-500 rounded-full"
+                  style={{ width: `${(loadedImagesCount / 15) * 100}%` }}
+                ></div>
+              </div>
+
+              <div className="space-y-1">
+                <span className="block text-[11px] font-bold text-slate-600 font-mono">
+                  Postęp: {loadedImagesCount} / 15 stron ({Math.round((loadedImagesCount / 15) * 100)}%)
+                </span>
+                {Object.keys(imageErrorsMap).length > 0 && (
+                  <span className="block text-[9px] text-[#D4A373] font-medium animate-pulse font-sans">
+                    Zaczarowany pisarz dopracowuje szczegóły rysunków...
+                  </span>
+                )}
+              </div>
+              
+              <button
+                type="button"
+                onClick={() => {
+                  setStep(-1);
+                  setStory(null);
+                }}
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 text-[10px] font-bold uppercase rounded-xl transition-all cursor-pointer font-sans"
+              >
+                Powrót do pulpitu
+              </button>
+            </div>
+          ) : step === 5 && story && (
             <div className="flex flex-col items-center gap-6 w-full max-w-[500px] print:hidden">
               
               <div className="relative w-full bg-white rounded-sm shadow-2xl flex flex-col p-6 font-serif border-[12px] border-white outline outline-1 outline-[#E5E5E1]">
@@ -1333,17 +1378,17 @@ export default function App() {
               <div 
                 key={idx} 
                 className="w-full mx-auto flex flex-col items-center justify-between p-8 page-break-after" 
-              style={{ 
-                boxSizing: 'border-box', 
-                height: '297mm', 
-                maxHeight: '297mm', 
-                overflow: 'hidden', 
-                position: 'relative', 
-                pageBreakInside: 'avoid', 
-                breakInside: 'avoid',
-                pageBreakAfter: 'always',
-                breakAfter: 'page'
-              }}
+                style={{ 
+                  boxSizing: 'border-box', 
+                  height: '297mm', 
+                  maxHeight: '297mm', 
+                  overflow: 'hidden', 
+                  position: 'relative', 
+                  pageBreakInside: 'avoid', 
+                  breakInside: 'avoid',
+                  pageBreakAfter: idx === story.pages.length - 1 ? 'avoid' : 'always',
+                  breakAfter: idx === story.pages.length - 1 ? 'avoid' : 'page'
+                }}
             >
               <div className="text-center w-full">
                 <h2 className="text-xl font-serif font-black text-[#1A1C23] tracking-tight">{story.title}</h2>
