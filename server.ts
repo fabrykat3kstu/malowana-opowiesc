@@ -200,7 +200,7 @@ app.post("/api/generate-image", async (req, res) => {
         },
         body: JSON.stringify({
           input: {
-            prompt: prompt,
+            prompt: `${prompt}, strictly pure black and white line art coloring page, no colors, no color shading, pure colorless line drawing, outlines only, white background, grayscale-free, clean line art`,
             aspect_ratio: "3:4",
             seed: seed ? Number(seed) : undefined,
             num_outputs: 1,

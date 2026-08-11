@@ -58,20 +58,20 @@ Rules for the Story:
 
 Rules for the Image Prompts (Strict Character Consistency):
 1. Character Visual Description Anchor: You must define ONE stable, highly precise visual description of the protagonist character based on the archetype "${archetype}" and gender "${childGender}". You must REPLICATE this exact character description text string verbatim in all 15 prompts (do not change or modify it across pages to ensure character consistency).
-Use the following strict visual description for the character:
+Use the following strict visual description for the character (DO NOT include any color names):
 ${
   archetype === "Dinozaur" 
-    ? `"a cute 5-year-old chibi child with big round eyes, wearing a friendly green plush dinosaur onesie with soft rounded back-spikes and a plush tail"`
+    ? `"a cute 5-year-old chibi child with big round eyes, wearing a friendly plush dinosaur onesie with soft rounded back-spikes and a plush tail"`
     : archetype === "Syrenka" 
     ? `"a cute 5-year-old chibi mermaid girl with big round eyes, soft wavy hair with a small starfish accessory, and a shiny fish tail"`
     : archetype === "Dzielny Rycerz" 
     ? `"a cute 5-year-old chibi knight child with big round eyes, wearing a simple toy helmet with a feather and a small wooden shield"`
     : archetype === "Astronauta"
-    ? `"a cute 5-year-old chibi astronaut child with big round eyes, wearing a simple white space suit with friendly patches and a round bubble space helmet"`
+    ? `"a cute 5-year-old chibi astronaut child with big round eyes, wearing a simple space suit with friendly patches and a round bubble space helmet"`
     : archetype === "Młody Czarodziej"
     ? `"a cute 5-year-old chibi wizard child with big round eyes, wearing a starry pointed wizard hat and holding a small wooden wand"`
     : archetype === "Strażak"
-    ? `"a cute 5-year-old chibi firefighter child with big round eyes, wearing a bright firefighter jacket and a simple yellow toy fire helmet"`
+    ? `"a cute 5-year-old chibi firefighter child with big round eyes, wearing a firefighter jacket and a simple toy fire helmet"`
     : `"a cute 5-year-old chibi child styled as ${archetype} with big round eyes"`
 }
 
@@ -81,8 +81,9 @@ The prompt MUST strictly follow this pattern:
 
 Crucial Visual Quality Guidelines:
 1. Environment Anchoring: Every single one of the 15 generated image prompts must explicitly include rich, detailed background/environmental elements characteristic of the selected world: "${world}". You must anchor the character and the scene in this environment on every page (e.g., if the world is "Podwodny Pałac", you must explicitly add details like: 'underwater scene, swimming fish, sea corals, floating water bubbles, aquatic plants' to the prompt on every page. If the world is "Tajemniczy Las", you must explicitly add details like: 'enchanted mystic forest, giant friendly hollow trees, beautiful wild flowers, tiny lanterns hanging from branches' to the prompt on every page. If the world is "Kosmiczna Stacja", you must add: 'futuristic space station, viewport showing planet stars, friendly small helper robots').
-2. Strictly enforce Monochrome Line Art: The coloring page must be strictly pure black and white. There must be absolutely no colors, no grayscale tones, no shading, no shadows, no digital lighting effects, no colored glows, and no gradients. Ensure the instruction in the prompt uses words like: 'strictly pure black and white coloring page, completely colorless, no color effects, no colored glows, zero gradients, zero shading, plain solid white background, monochrome line art, clean ink drawing, bold black outlines'.
-3. Strictly block any text or letters: Ensure there are absolutely no words, names, letters, titles, or characters written anywhere on the page or in the background. Do NOT include the child's actual name inside the image prompt text itself (to prevent glitched letters and writing).`;
+2. NO Color Names: You must NEVER include any color adjectives (such as: 'green', 'yellow', 'blue', 'red', 'colorful', etc.) in the prompts. Describe objects purely by name and shape (e.g. use 'plush onesie', 'hanging lanterns', 'wooden logs', 'flower leaves' instead of 'green onesie', 'glowing yellow lanterns', 'brown logs', 'green leaves').
+3. Strictly enforce Monochrome Line Art: The coloring page must be strictly pure black and white. There must be absolutely no colors, no grayscale tones, no shading, no shadows, no digital lighting effects, no colored glows, and no gradients. Ensure the instruction in the prompt uses words like: 'strictly pure black and white coloring page, completely colorless, no color effects, no colored glows, zero gradients, zero shading, plain solid white background, monochrome line art, clean ink drawing, bold outlines'.
+4. Strictly block any text or letters: Ensure there are absolutely no words, names, letters, titles, or characters written anywhere on the page or in the background. Do NOT include the child's actual name inside the image prompt text itself (to prevent glitched letters and writing).`;
 
     const userQuery = `Stwórz fascynującą, spójną 15-stronicową bajkę o imieniu: ${childName}, płeć: ${childGender === 'boy' ? 'chłopiec' : 'dziewczynka'}, wiek: ${childAge} lat. Archetyp: ${archetype}, Świat: ${world}, Morał: ${moral}.`;
 
@@ -149,7 +150,7 @@ app.post("/api/generate-image", async (req, res) => {
         },
         body: JSON.stringify({
           input: {
-            prompt: prompt,
+            prompt: `${prompt}, strictly pure black and white line art coloring page, no colors, no color shading, pure colorless line drawing, outlines only, white background, grayscale-free, clean line art`,
             aspect_ratio: "3:4",
             seed: seed ? Number(seed) : undefined,
             num_outputs: 1,
