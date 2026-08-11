@@ -474,6 +474,13 @@ export default function App() {
     showToast("Wznowiono rysowanie brakujących ilustracji...");
   };
 
+  const handlePrintBook = () => {
+    showToast("Przygotowywanie pliku PDF do pobrania...");
+    setTimeout(() => {
+      window.print();
+    }, 1200); // 1.2s delay na settle wątku druku i cache obrazków
+  };
+
   const getCoverTheme = () => {
     switch (preferences.world) {
       case "Kosmiczna Stacja":
@@ -1240,7 +1247,7 @@ export default function App() {
                   ) : isAllImagesLoaded ? (
                     <button
                       type="button"
-                      onClick={() => window.print()}
+                      onClick={handlePrintBook}
                       className="flex-1 py-3 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all font-sans bg-[#6B705C] hover:bg-[#585c4b] text-white cursor-pointer hover:scale-[1.01] active:scale-[0.99] shadow-sm"
                     >
                       <Printer className="w-3.5 h-3.5" />
@@ -1264,6 +1271,25 @@ export default function App() {
 
         </section>
       </div>
+
+      {/* Niewidoczny preloader wymuszający natychmiastowe pobranie wszystkich ilustracji przez przeglądarkę */}
+      {step === 5 && story && (
+        <div className="absolute top-0 left-0 w-1 h-1 opacity-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          {story.pages.map((_, idx) => {
+            if (imagesMap[idx]) {
+              return (
+                <img 
+                  key={idx} 
+                  src={imagesMap[idx]} 
+                  alt="" 
+                  loading="eager" 
+                />
+              );
+            }
+            return null;
+          })}
+        </div>
+      )}
 
       {/* Drukuj całą książkę - widoczne tylko przy drukowaniu */}
       {step === 5 && story && (
