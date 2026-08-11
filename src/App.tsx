@@ -285,6 +285,35 @@ export default function App() {
     }
   };
 
+  const handleImageFailure = (pageIdx: number, errMsg: string) => {
+    setImageErrorsMap(prev => ({ ...prev, [pageIdx]: errMsg }));
+    
+    // Usuń z mapy obrazków, aby wymusić ponowne pobranie
+    setImagesMap(prev => {
+      if (prev[pageIdx]) {
+        const updated = { ...prev };
+        delete updated[pageIdx];
+        return updated;
+      }
+      return prev;
+    });
+
+    // Zresetuj flagę ładowania na wypadek zawieszenia
+    setLoadingImagesMap(prev => ({ ...prev, [pageIdx]: false }));
+
+    // Zwiększ licznik prób i zaplanuj automatyczne ponowne rysowanie z backoffem
+    setRetryCountMap(prev => {
+      const nextCount = (prev[pageIdx] || 0) + 1;
+      const backoffTime = Math.min(30000, Math.pow(2, nextCount) * 1000); // 2s, 4s, 8s, 16s... max 30s
+      
+      setTimeout(() => {
+        setImageErrorsMap(errs => ({ ...errs, [pageIdx]: "" }));
+      }, backoffTime);
+      
+      return { ...prev, [pageIdx]: nextCount };
+    });
+  };
+
   const triggerImageRender = async (pageIdx: number, promptText: string, targetSeed?: number) => {
     if (imagesMap[pageIdx] || loadingImagesMap[pageIdx]) return;
 
@@ -348,20 +377,7 @@ export default function App() {
       }
     } catch (e: any) {
       console.error(e);
-      const errMsg = e.message || "Problem z rysowaniem ilustracji.";
-      setImageErrorsMap(prev => ({ ...prev, [pageIdx]: errMsg }));
-      
-      // Automatyczny restart kolejki dla tej strony po czasie backoff
-      setRetryCountMap(prev => {
-        const nextCount = (prev[pageIdx] || 0) + 1;
-        const backoffTime = Math.min(30000, Math.pow(2, nextCount) * 1000);
-        
-        setTimeout(() => {
-          setImageErrorsMap(errs => ({ ...errs, [pageIdx]: "" }));
-        }, backoffTime);
-        
-        return { ...prev, [pageIdx]: nextCount };
-      });
+      handleImageFailure(pageIdx, e.message || "Problem z rysowaniem ilustracji.");
     } finally {
       setLoadingImagesMap(prev => ({ ...prev, [pageIdx]: false }));
     }
@@ -1108,15 +1124,7 @@ export default function App() {
                       alt="Ilustracja Kolorowanki"
                       className="w-full h-full object-contain"
                       onError={() => {
-                        setImagesMap(prev => {
-                          const updated = { ...prev };
-                          delete updated[currentPageIndex];
-                          return updated;
-                        });
-                        setImageErrorsMap(prev => ({
-                          ...prev,
-                          [currentPageIndex]: "Ilustracja wygasła lub nie udało się jej pobrać. Kliknij przycisk poniżej, aby spróbować ponownie."
-                        }));
+                        handleImageFailure(currentPageIndex, "Ilustracja wygasła lub nie udało się jej pobrać.");
                       }}
                     />
                   ) : !imageErrorsMap[currentPageIndex] ? (
@@ -1146,6 +1154,7 @@ export default function App() {
                       <button
                         onClick={() => {
                           setImageErrorsMap(prev => ({ ...prev, [currentPageIndex]: "" }));
+                          setLoadingImagesMap(prev => ({ ...prev, [currentPageIndex]: false }));
                           triggerImageRender(currentPageIndex, story.pages[currentPageIndex].image_prompt, seed);
                         }}
                         className="px-3.5 py-1.5 bg-[#6B705C] hover:bg-[#585c4b] text-white text-[9px] font-bold uppercase rounded-xl cursor-pointer"
