@@ -186,8 +186,17 @@ app.post("/api/generate-image", async (req, res) => {
     let currentPrediction;
     let predictionIdToPoll = predictionId;
 
+    let processedPrompt = prompt;
+    if (processedPrompt) {
+      // Wyczyszczenie przymiotników kolorów z promptu, aby wymusić czarno-biały styl dla starych książek
+      processedPrompt = processedPrompt
+        .replace(/\b(green|yellow|blue|red|orange|purple|pink|brown|colorful|bright)\b/gi, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
     if (!predictionIdToPoll) {
-      if (!prompt) {
+      if (!processedPrompt) {
         return res.status(400).json({ error: "Brak promptu graficznego." });
       }
 
@@ -200,7 +209,7 @@ app.post("/api/generate-image", async (req, res) => {
         },
         body: JSON.stringify({
           input: {
-            prompt: `${prompt}, strictly pure black and white line art coloring page, no colors, no color shading, pure colorless line drawing, outlines only, white background, grayscale-free, clean line art`,
+            prompt: `${processedPrompt}, strictly pure black and white line art coloring page, no colors, no color shading, pure colorless line drawing, outlines only, white background, grayscale-free, clean line art`,
             aspect_ratio: "3:4",
             seed: seed ? Number(seed) : undefined,
             num_outputs: 1,
