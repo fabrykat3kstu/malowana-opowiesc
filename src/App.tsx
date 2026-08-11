@@ -59,6 +59,7 @@ export default function App() {
   const [imagesMap, setImagesMap] = useState<Record<number, string>>({});
   const [loadingImagesMap, setLoadingImagesMap] = useState<Record<number, boolean>>({});
   const [imageErrorsMap, setImageErrorsMap] = useState<Record<number, string>>({});
+  const [retryCountMap, setRetryCountMap] = useState<Record<number, number>>({});
 
   const unlockedCount = story ? story.pages.filter((_, idx) => !!unlockedPages[idx]).length : 0;
   const loadedImagesCount = story ? story.pages.filter((_, idx) => !!unlockedPages[idx] && !!imagesMap[idx]).length : 0;
@@ -75,6 +76,7 @@ export default function App() {
     const finalImagesMap = isExpired ? {} : saved.imagesMap;
     setImagesMap(finalImagesMap);
     setImageErrorsMap({});
+    setRetryCountMap({});
     
     const allUnlocked: Record<number, boolean> = {};
     if (saved.unlockedPages && Object.keys(saved.unlockedPages).length > 1) {
@@ -346,7 +348,20 @@ export default function App() {
       }
     } catch (e: any) {
       console.error(e);
-      setImageErrorsMap(prev => ({ ...prev, [pageIdx]: e.message || "Problem z rysowaniem ilustracji." }));
+      const errMsg = e.message || "Problem z rysowaniem ilustracji.";
+      setImageErrorsMap(prev => ({ ...prev, [pageIdx]: errMsg }));
+      
+      // Automatyczny restart kolejki dla tej strony po czasie backoff
+      setRetryCountMap(prev => {
+        const nextCount = (prev[pageIdx] || 0) + 1;
+        const backoffTime = Math.min(30000, Math.pow(2, nextCount) * 1000);
+        
+        setTimeout(() => {
+          setImageErrorsMap(errs => ({ ...errs, [pageIdx]: "" }));
+        }, backoffTime);
+        
+        return { ...prev, [pageIdx]: nextCount };
+      });
     } finally {
       setLoadingImagesMap(prev => ({ ...prev, [pageIdx]: false }));
     }
@@ -1114,23 +1129,28 @@ export default function App() {
                     </div>
                   ) : (
                     <div className="p-6 text-center space-y-4 flex flex-col items-center animate-fadeIn font-sans">
-                      <Paintbrush className="w-12 h-12 text-[#9A9A92] stroke-1" />
+                      <div className="w-8 h-8 border-4 border-rose-200 border-t-rose-500 rounded-full animate-spin shrink-0"></div>
                       <div>
-                        <span className="block text-xs font-serif font-bold text-[#1A1C23]">Nie udało się narysować ilustracji</span>
+                        <span className="block text-xs font-serif font-bold text-[#1A1C23]">
+                          Chwilowy kłopot z rysowaniem (Próba {retryCountMap[currentPageIndex] || 1})
+                        </span>
                         {imageErrorsMap[currentPageIndex] && (
-                          <span className="block text-[10px] text-rose-500 font-bold mt-2 max-w-[280px] bg-rose-50 border border-rose-100 p-2 rounded-xl text-center">
-                            Wiadomość z API: {imageErrorsMap[currentPageIndex]}
+                          <span className="block text-[10px] text-rose-600 font-bold mt-2 max-w-[280px] bg-rose-50 border border-rose-100 p-2.5 rounded-xl text-center font-mono leading-normal">
+                            Błąd: {imageErrorsMap[currentPageIndex]}
                           </span>
                         )}
+                        <span className="block text-[9px] text-slate-400 mt-2">
+                          Zaczarowany pisarz spróbuje ponownie automatycznie za chwilę...
+                        </span>
                       </div>
                       <button
                         onClick={() => {
                           setImageErrorsMap(prev => ({ ...prev, [currentPageIndex]: "" }));
                           triggerImageRender(currentPageIndex, story.pages[currentPageIndex].image_prompt, seed);
                         }}
-                        className="px-4 py-2 bg-[#6B705C] hover:bg-[#585c4b] text-white text-[10px] font-bold uppercase rounded-xl cursor-pointer"
+                        className="px-3.5 py-1.5 bg-[#6B705C] hover:bg-[#585c4b] text-white text-[9px] font-bold uppercase rounded-xl cursor-pointer"
                       >
-                        Spróbuj ponownie
+                        Spróbuj teraz
                       </button>
                     </div>
                   )}
@@ -1217,7 +1237,7 @@ export default function App() {
                       <Printer className="w-3.5 h-3.5" />
                       <span>Pobierz książeczkę ({unlockedCount} str. PDF)</span>
                     </button>
-                  ) : Object.values(loadingImagesMap).some(v => v === true) ? (
+                  ) : (
                     <button
                       type="button"
                       disabled
@@ -1226,23 +1246,6 @@ export default function App() {
                       <div className="w-3.5 h-3.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin shrink-0"></div>
                       <span>Rysowanie ilustracji ({loadedImagesCount}/{unlockedCount})...</span>
                     </button>
-                  ) : (
-                    <div className="flex-1 flex gap-2">
-                      <button
-                        type="button"
-                        onClick={() => window.print()}
-                        className="flex-1 py-3 bg-white border border-[#E5E5E1] text-[#6B705C] text-xs font-bold rounded-xl flex items-center justify-center gap-1 hover:bg-[#FAF9F6] cursor-pointer font-sans"
-                      >
-                        <Printer className="w-3 h-3" /> Drukuj mimo to
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleRetryAllFailed}
-                        className="flex-1 py-3 bg-[#D4A373] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1 hover:bg-[#c59262] cursor-pointer animate-pulse font-sans"
-                      >
-                        <RefreshCw className="w-3 h-3 animate-spin" style={{ animationDuration: '4s' }} /> Narysuj brakujące ({unlockedCount - loadedImagesCount})
-                      </button>
-                    </div>
                   )}
                 </div>
               </div>
