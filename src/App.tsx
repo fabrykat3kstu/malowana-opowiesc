@@ -70,11 +70,10 @@ export default function App() {
     setPreferences(saved.preferences);
     setSeed(saved.seed || Math.floor(Math.random() * 1000000));
     
-    // Wygasanie obrazków po 1 godzinie w celach self-healingu
-    const oneHour = 60 * 60 * 1000;
-    const isExpired = saved.timestamp ? (Date.now() - saved.timestamp > oneHour) : true;
-    const finalImagesMap = isExpired ? {} : saved.imagesMap;
-    setImagesMap(finalImagesMap);
+    // Nie wygaszamy obrazków automatycznie, ponieważ linki Replicate CDN są trwałe.
+    // Dzięki temu stare bajki wczytują się natychmiast bez ponownego generowania grafik.
+    // Jeśli którykolwiek obrazek rzeczywiście wygaśnie lub zniknie, obsługa onError go dorysuje.
+    setImagesMap(saved.imagesMap || {});
     setImageErrorsMap({});
     setRetryCountMap({});
     
