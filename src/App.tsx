@@ -67,8 +67,14 @@ export default function App() {
   const loadSavedStory = (saved: SavedStory) => {
     setStory(saved.story);
     setPreferences(saved.preferences);
-    setImagesMap(saved.imagesMap);
     setSeed(saved.seed || Math.floor(Math.random() * 1000000));
+    
+    // Wygasanie obrazków po 1 godzinie w celach self-healingu
+    const oneHour = 60 * 60 * 1000;
+    const isExpired = saved.timestamp ? (Date.now() - saved.timestamp > oneHour) : true;
+    const finalImagesMap = isExpired ? {} : saved.imagesMap;
+    setImagesMap(finalImagesMap);
+    setImageErrorsMap({});
     
     const allUnlocked: Record<number, boolean> = {};
     if (saved.unlockedPages && Object.keys(saved.unlockedPages).length > 1) {
@@ -318,21 +324,29 @@ export default function App() {
     }
   };
 
-  // Efekt automatycznego sekwencyjnego pobierania odblokowanych ilustracji w tle
+  // Efekt automatycznego pobierania odblokowanych ilustracji w tle (do 3 zadań współbieżnie)
   useEffect(() => {
     if (step !== 5 || !story) return;
 
-    // Sprawdź czy jakikolwiek obrazek jest obecnie pobierany
-    const isAnyLoading = Object.values(loadingImagesMap).some(v => v === true);
-    if (isAnyLoading) return;
+    // Sprawdź czy bieżąca oglądana strona potrzebuje narysowania ilustracji
+    const currentNeedsGeneration = unlockedPages[currentPageIndex] && 
+                                   !imagesMap[currentPageIndex] && 
+                                   !imageErrorsMap[currentPageIndex] && 
+                                   !loadingImagesMap[currentPageIndex];
+
+    // Oblicz ile stron jest aktualnie w trakcie rysowania
+    const activeLoadingCount = Object.values(loadingImagesMap).filter(v => v === true).length;
+    
+    // Jeśli rysujemy już 3 ilustracje na raz, a bieżąca strona nie wymaga natychmiastowego startu, czekamy
+    if (activeLoadingCount >= 3 && !currentNeedsGeneration) return;
 
     let nextIndex = -1;
 
-    // 1. Priorytet: Sprawdź czy bieżąca oglądana strona potrzebuje ilustracji i jest odblokowana
-    if (unlockedPages[currentPageIndex] && !imagesMap[currentPageIndex] && !imageErrorsMap[currentPageIndex] && !loadingImagesMap[currentPageIndex]) {
+    // 1. Priorytet: Bieżąca oglądana strona
+    if (currentNeedsGeneration) {
       nextIndex = currentPageIndex;
     } else {
-      // 2. Kolejka: Znajdź pierwszą inną odblokowaną stronę bez ilustracji
+      // 2. Kolejka w tle: Pierwsza odblokowana strona bez ilustracji
       nextIndex = story.pages.findIndex(
         (_, idx) => unlockedPages[idx] && !imagesMap[idx] && !imageErrorsMap[idx] && !loadingImagesMap[idx]
       );
@@ -341,7 +355,7 @@ export default function App() {
     if (nextIndex !== -1) {
       const timer = setTimeout(() => {
         triggerImageRender(nextIndex, story.pages[nextIndex].image_prompt, seed);
-      }, 500); // 500ms odstępu
+      }, 300); // Szybki start (300ms)
       return () => clearTimeout(timer);
     }
   }, [step, story, currentPageIndex, imagesMap, loadingImagesMap, imageErrorsMap, unlockedPages]);
@@ -817,15 +831,7 @@ export default function App() {
                           <button
                             key={saved.id}
                             type="button"
-                            onClick={() => {
-                              setStory(saved.story);
-                              setPreferences(saved.preferences);
-                              setImagesMap(saved.imagesMap);
-                              setUnlockedPages(saved.unlockedPages);
-                              setActiveStoryId(saved.id);
-                              setCurrentPageIndex(0);
-                              setStep(5);
-                            }}
+                            onClick={() => loadSavedStory(saved)}
                             className="p-4 bg-slate-50 border border-slate-100 rounded-xl hover:border-[#D4A373] text-left transition-all cursor-pointer hover:bg-white flex items-center justify-between gap-4 group"
                           >
                             <div className="space-y-1">
@@ -1057,6 +1063,14 @@ export default function App() {
                         }));
                       }}
                     />
+                  ) : !imageErrorsMap[currentPageIndex] ? (
+                    <div className="absolute inset-0 bg-[#FAF9F6] flex flex-col items-center justify-center p-6 text-center space-y-4 animate-fadeIn">
+                      <div className="w-8 h-8 border-4 border-[#D4A373]/20 border-t-[#D4A373] rounded-full animate-spin"></div>
+                      <span className="block text-xs font-serif font-bold text-slate-700">Ilustracja w kolejce</span>
+                      <span className="block text-[10px] text-[#9A9A92] leading-tight max-w-[220px] mx-auto font-sans">
+                        Ta strona czeka w kolejce na narysowanie. Zaczarowany pisarz układa strony w tle...
+                      </span>
+                    </div>
                   ) : (
                     <div className="p-6 text-center space-y-4 flex flex-col items-center animate-fadeIn font-sans">
                       <Paintbrush className="w-12 h-12 text-[#9A9A92] stroke-1" />
@@ -1069,7 +1083,10 @@ export default function App() {
                         )}
                       </div>
                       <button
-                        onClick={() => triggerImageRender(currentPageIndex, story.pages[currentPageIndex].image_prompt)}
+                        onClick={() => {
+                          setImageErrorsMap(prev => ({ ...prev, [currentPageIndex]: "" }));
+                          triggerImageRender(currentPageIndex, story.pages[currentPageIndex].image_prompt, seed);
+                        }}
                         className="px-4 py-2 bg-[#6B705C] hover:bg-[#585c4b] text-white text-[10px] font-bold uppercase rounded-xl cursor-pointer"
                       >
                         Spróbuj ponownie
