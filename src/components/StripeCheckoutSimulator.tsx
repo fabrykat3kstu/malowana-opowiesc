@@ -40,8 +40,21 @@ export default function StripeCheckoutSimulator({ childName, onClose }: StripeCh
       });
 
       if (!res.ok) {
-        const errText = await res.json().catch(() => ({}));
-        throw new Error(errText.error || "Nie udało się utworzyć sesji Stripe.");
+        let errMsg = "Nie udało się utworzyć sesji Stripe.";
+        try {
+          const errData = await res.json();
+          if (errData && errData.error) {
+            errMsg = errData.error;
+          }
+        } catch (_) {
+          try {
+            const rawText = await res.text();
+            if (rawText) {
+              errMsg = rawText;
+            }
+          } catch (__) {}
+        }
+        throw new Error(errMsg);
       }
 
       const data = await res.json();
