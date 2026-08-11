@@ -950,6 +950,13 @@ export default function App() {
                           src={imagesMap[0]} 
                           alt="Miniatura pierwszej strony" 
                           className="w-full h-full object-cover" 
+                          onError={() => {
+                            setImagesMap(prev => {
+                              const updated = { ...prev };
+                              delete updated[0];
+                              return updated;
+                            });
+                          }}
                         />
                       </div>
                     ) : (
@@ -1035,6 +1042,17 @@ export default function App() {
                       src={imagesMap[currentPageIndex]}
                       alt="Ilustracja Kolorowanki"
                       className="w-full h-full object-contain"
+                      onError={() => {
+                        setImagesMap(prev => {
+                          const updated = { ...prev };
+                          delete updated[currentPageIndex];
+                          return updated;
+                        });
+                        setImageErrorsMap(prev => ({
+                          ...prev,
+                          [currentPageIndex]: "Ilustracja wygasła lub nie udało się jej pobrać. Kliknij przycisk poniżej, aby spróbować ponownie."
+                        }));
+                      }}
                     />
                   ) : (
                     <div className="p-6 text-center space-y-4 flex flex-col items-center animate-fadeIn font-sans">
