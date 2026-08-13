@@ -336,7 +336,7 @@ export default function App() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
             prompt: promptText, 
-            seed: activeSeed, 
+            seed: activeSeed + pageIdx, 
             predictionId: currentPredictionId 
           })
         });
