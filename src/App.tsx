@@ -6,6 +6,8 @@ import {
   Star, Droplets, Map, BookOpen, Flame, Feather, Lock, Check, X, ShieldCheck, RefreshCw
 } from "lucide-react";
 import StripeCheckoutSimulator from "./components/StripeCheckoutSimulator";
+import RegulaminContent from "./components/RegulaminContent";
+import CookiesBanner from "./components/CookiesBanner";
 import { ARCHETYPES, WORLDS, MORALS } from "./data";
 import { ChildPreferences, StoryBook } from "./types";
 
@@ -587,6 +589,85 @@ export default function App() {
     }
   };
 
+  if (window.location.pathname === "/regulamin") {
+    return (
+      <div id="app-root" className="min-h-screen w-full bg-[#FAF9F6] text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
+        {hudMessage && (
+          <div className="fixed top-6 right-6 z-50 bg-[#1A1C23] text-white px-5 py-3 rounded-xl shadow-lg border border-slate-700 text-xs font-semibold tracking-wide flex items-center gap-2 animate-fadeIn print:hidden">
+            <Sparkles className="text-[#D4A373] animate-pulse w-4 h-4" />
+            <span>{hudMessage}</span>
+          </div>
+        )}
+
+        <header className="h-20 bg-white border-b border-[#E5E5E1] px-6 md:px-12 flex items-center justify-between flex-shrink-0 relative z-30 print:hidden">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#D4A373] rounded-xl flex items-center justify-center shadow-sm">
+              <Paintbrush className="text-white w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-lg md:text-xl font-serif font-black tracking-tight text-[#1A1C23]">
+                <a href="/" className="hover:text-[#D4A373] transition-colors">Malowana Opowieść</a>
+              </h1>
+              <p className="hidden md:block text-[10px] text-[#9A9A92] uppercase tracking-[0.15em] font-bold">Personalizator Bajek & Kolorowanek z Zaczarowanym pisarzem</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col items-end">
+              <span className="text-[9px] uppercase tracking-widest text-[#9A9A92] font-extrabold font-serif">Twoje bajki</span>
+              {loadingCredits ? (
+                <span className="text-xs text-slate-400 font-mono">Ładowanie...</span>
+              ) : (
+                <span className="text-sm md:text-base font-mono font-bold text-[#1A1C23] bg-[#F2F1EC] px-3 py-1 rounded-lg">
+                  {credits} {credits === 1 ? "bajka" : [2, 3, 4].includes(credits) ? "bajki" : "bajek"}
+                </span>
+              )}
+            </div>
+            <button 
+              type="button"
+              onClick={() => setShowStripeModal(true)} 
+              className="px-4 py-2 bg-[#1A1C23] text-white text-xs font-medium rounded-full hover:bg-black transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <Coins className="w-3.5 h-3.5 text-[#D4A373]" /> Kup bajki
+            </button>
+          </div>
+        </header>
+
+        <main className="flex-1 max-w-4xl mx-auto w-full px-6 py-12 space-y-8 print:hidden">
+          <RegulaminContent />
+        </main>
+
+        <footer className="w-full bg-[#FAF9F6] py-6 border-t border-[#E5E5E1]/60 text-center text-[11px] text-[#9A9A92] print:hidden">
+          <p className="font-sans">
+            © 2026 Malowana Opowieść ·{" "}
+            <a 
+              href="/regulamin" 
+              className="hover:text-[#D4A373] underline transition-colors font-bold"
+            >
+              Regulamin i Polityka Prywatności
+            </a>{" "}
+            · Kontakt:{" "}
+            <a 
+              href="mailto:fabryka.t3kstu@gmail.com" 
+              className="hover:text-[#D4A373] transition-colors"
+            >
+              fabryka.t3kstu@gmail.com
+            </a>
+          </p>
+        </footer>
+
+        <CookiesBanner />
+
+        {showStripeModal && (
+          <StripeCheckoutSimulator
+            childName="Dziecko"
+            onClose={() => setShowStripeModal(false)}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div id="app-root" className="min-h-screen w-full bg-[#FAF9F6] text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
       
@@ -603,7 +684,9 @@ export default function App() {
             <Paintbrush className="text-white w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-lg md:text-xl font-serif font-black tracking-tight text-[#1A1C23]">Malowana Opowieść</h1>
+            <h1 className="text-lg md:text-xl font-serif font-black tracking-tight text-[#1A1C23]">
+              <a href="/" className="hover:text-[#D4A373] transition-colors">Malowana Opowieść</a>
+            </h1>
             <p className="hidden md:block text-[10px] text-[#9A9A92] uppercase tracking-[0.15em] font-bold">Personalizator Bajek & Kolorowanek z Zaczarowanym pisarzem</p>
           </div>
         </div>
@@ -1425,6 +1508,30 @@ export default function App() {
           })}
         </div>
       )}
+
+      {/* Stopka - widoczna na każdej stronie prócz wydruku */}
+      <footer className="w-full bg-[#FAF9F6] py-6 border-t border-[#E5E5E1]/60 text-center text-[11px] text-[#9A9A92] print:hidden">
+        <p className="font-sans">
+          © 2026 Malowana Opowieść ·{" "}
+          <a 
+            href="/regulamin" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-[#D4A373] underline transition-colors font-bold"
+          >
+            Regulamin i Polityka Prywatności
+          </a>{" "}
+          · Kontakt:{" "}
+          <a 
+            href="mailto:fabryka.t3kstu@gmail.com" 
+            className="hover:text-[#D4A373] transition-colors"
+          >
+            fabryka.t3kstu@gmail.com
+          </a>
+        </p>
+      </footer>
+
+      <CookiesBanner />
 
       {showStripeModal && (
         <StripeCheckoutSimulator

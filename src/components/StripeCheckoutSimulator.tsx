@@ -11,6 +11,7 @@ export default function StripeCheckoutSimulator({ childName, onClose }: StripeCh
   const [selectedPlan, setSelectedPlan] = useState<"one" | "three" | "six" | "twelve">("three");
   const [userEmail, setUserEmail] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const handlePay = async () => {
     if (!userEmail.trim() || !userEmail.includes("@")) {
@@ -227,13 +228,41 @@ export default function StripeCheckoutSimulator({ childName, onClose }: StripeCh
               </div>
             </div>
 
+            {/* Regulamin / Polityka Prywatności Checkbox */}
+            <div className="flex items-start gap-2.5 px-1 font-sans">
+              <input
+                id="terms-checkbox"
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-1 w-4 h-4 rounded border-slate-200 text-[#635BFF] focus:ring-[#635BFF] cursor-pointer shrink-0"
+              />
+              <label htmlFor="terms-checkbox" className="text-[10px] leading-relaxed text-slate-500 font-medium cursor-pointer">
+                Zapoznałem/am się z{" "}
+                <a 
+                  href="/regulamin" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[#635BFF] hover:underline font-bold"
+                >
+                  Regulaminem i Polityką Prywatności
+                </a>{" "}
+                oraz wyrażam zgodę na natychmiastowe wykonanie usługi cyfrowej, co oznacza utratę prawa do odstąpienia od umowy po wygenerowaniu bajki.
+              </label>
+            </div>
+
             <div className="space-y-4">
               <button
                 onClick={handlePay}
-                className="w-full bg-[#635BFF] text-white p-3.5 rounded-full font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer hover:bg-[#544CF0] transition-all shadow-md active:scale-[0.99] hover:scale-[1.01] font-sans"
+                disabled={!acceptedTerms}
+                className={`w-full p-3.5 rounded-full font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all font-sans ${
+                  acceptedTerms 
+                    ? "bg-[#635BFF] text-white cursor-pointer hover:bg-[#544CF0] hover:scale-[1.01] active:scale-[0.99]" 
+                    : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                }`}
               >
                 <ShieldCheck size={16} />
-                Zapłać przez Stripe
+                Zapłać i dodaj bajki
               </button>
 
               <div className="flex flex-col items-center gap-2 pt-1">
