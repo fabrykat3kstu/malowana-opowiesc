@@ -477,8 +477,15 @@ export default function App() {
 
   const handlePrintBook = () => {
     showToast("Przygotowywanie pliku PDF do pobrania...");
+    const originalTitle = document.title;
+    if (story?.title) {
+      document.title = `${story.title} - Malowana Opowieść`;
+    } else {
+      document.title = "Malowana Opowieść - Personalizator Bajek";
+    }
     setTimeout(() => {
       window.print();
+      document.title = originalTitle;
     }, 1200); // 1.2s delay na settle wątku druku i cache obrazków
   };
 
