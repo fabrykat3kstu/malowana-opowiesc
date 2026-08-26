@@ -615,17 +615,17 @@ export default function App() {
               <h1 className="text-lg md:text-xl font-serif font-black tracking-tight text-[#1A1C23]">
                 <a href="/" className="hover:text-[#D4A373] transition-colors">Malowana Opowieść</a>
               </h1>
-              <p className="hidden md:block text-[10px] text-[#9A9A92] uppercase tracking-[0.15em] font-bold">Personalizator Bajek & Kolorowanek z Zaczarowanym pisarzem</p>
+              <p className="hidden md:block text-[11px] text-[#828276] uppercase tracking-[0.12em] font-bold">Personalizator Bajek & Kolorowanek z Zaczarowanym pisarzem</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="flex flex-col items-end">
-              <span className="text-[9px] uppercase tracking-widest text-[#9A9A92] font-extrabold font-serif">Twoje bajki</span>
+              <span className="text-[10px] uppercase tracking-wider text-[#828276] font-bold font-sans">Twoje bajki</span>
               {loadingCredits ? (
                 <span className="text-xs text-slate-400 font-mono">Ładowanie...</span>
               ) : (
-                <span className="text-sm md:text-base font-mono font-bold text-[#1A1C23] bg-[#F2F1EC] px-3 py-1 rounded-lg">
+                <span className="text-sm md:text-base font-mono font-bold text-[#1A1C23] bg-[#F2F1EC] px-3.5 py-1 rounded-lg">
                   {credits} {credits === 1 ? "bajka" : [2, 3, 4].includes(credits) ? "bajki" : "bajek"}
                 </span>
               )}
@@ -633,7 +633,7 @@ export default function App() {
             <button 
               type="button"
               onClick={() => setShowStripeModal(true)} 
-              className="px-4 py-2 bg-[#1A1C23] text-white text-xs font-medium rounded-full hover:bg-black transition-all flex items-center gap-1.5 cursor-pointer"
+              className="px-5 py-2.5 bg-[#1A1C23] text-white text-xs font-bold uppercase rounded-full hover:bg-black transition-all flex items-center gap-2 cursor-pointer shadow-xs hover:scale-[1.02] active:scale-[0.98]"
             >
               <Coins className="w-3.5 h-3.5 text-[#D4A373]" /> Kup bajki
             </button>
@@ -644,7 +644,7 @@ export default function App() {
           <RegulaminContent />
         </main>
 
-        <footer className="w-full bg-[#FAF9F6] py-6 border-t border-[#E5E5E1]/60 text-center text-[11px] text-[#9A9A92] print:hidden">
+        <footer className="w-full bg-[#FAF9F6] py-6 border-t border-[#E5E5E1]/60 text-center text-xs md:text-sm text-[#7C7C71] print:hidden">
           <p className="font-sans">
             © 2026 Malowana Opowieść ·{" "}
             <a 
@@ -656,7 +656,7 @@ export default function App() {
             · Kontakt:{" "}
             <a 
               href="mailto:fabryka.t3kstu@gmail.com" 
-              className="hover:text-[#D4A373] transition-colors"
+              className="hover:text-[#D4A373] transition-colors font-semibold"
             >
               fabryka.t3kstu@gmail.com
             </a>
@@ -694,17 +694,17 @@ export default function App() {
             <h1 className="text-lg md:text-xl font-serif font-black tracking-tight text-[#1A1C23]">
               <a href="/" className="hover:text-[#D4A373] transition-colors">Malowana Opowieść</a>
             </h1>
-            <p className="hidden md:block text-[10px] text-[#9A9A92] uppercase tracking-[0.15em] font-bold">Personalizator Bajek & Kolorowanek z Zaczarowanym pisarzem</p>
+            <p className="hidden md:block text-[11px] text-[#828276] uppercase tracking-[0.12em] font-bold">Personalizator Bajek & Kolorowanek z Zaczarowanym pisarzem</p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="flex flex-col items-end">
-            <span className="text-[9px] uppercase tracking-widest text-[#9A9A92] font-extrabold font-serif">Twoje bajki</span>
+            <span className="text-[10px] uppercase tracking-wider text-[#828276] font-bold font-sans">Twoje bajki</span>
             {loadingCredits ? (
               <span className="text-xs text-slate-400 font-mono">Ładowanie...</span>
             ) : (
-              <span className="text-sm md:text-base font-mono font-bold text-[#1A1C23] bg-[#F2F1EC] px-3 py-1 rounded-lg">
+              <span className="text-sm md:text-base font-mono font-bold text-[#1A1C23] bg-[#F2F1EC] px-3.5 py-1 rounded-lg">
                 {credits} {credits === 1 ? "bajka" : [2, 3, 4].includes(credits) ? "bajki" : "bajek"}
               </span>
             )}
@@ -712,7 +712,7 @@ export default function App() {
           <button 
             type="button"
             onClick={() => setShowStripeModal(true)} 
-            className="px-4 py-2 bg-[#1A1C23] text-white text-xs font-medium rounded-full hover:bg-black transition-all flex items-center gap-1.5 cursor-pointer"
+            className="px-5 py-2.5 bg-[#1A1C23] text-white text-xs font-bold uppercase rounded-full hover:bg-black transition-all flex items-center gap-2 cursor-pointer shadow-xs hover:scale-[1.02] active:scale-[0.98]"
           >
             <Coins className="w-3.5 h-3.5 text-[#D4A373]" /> Kup bajki
           </button>
@@ -938,43 +938,43 @@ export default function App() {
                 <div className="w-16 h-16 bg-[#D4A373]/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#D4A373]/20">
                   <Paintbrush className="text-[#D4A373] w-8 h-8" />
                 </div>
-                <h2 className="font-serif text-3xl font-black text-[#1A1C23] leading-tight">
+                <h2 className="font-serif text-3xl md:text-4xl font-black text-[#1A1C23] leading-tight">
                   Dzień dobry! Dla kogo dzisiaj układamy bajkę?
                 </h2>
-                <p className="text-sm text-slate-400 font-medium font-sans">
+                <p className="text-sm md:text-base text-slate-600 font-medium font-sans max-w-xl mx-auto leading-relaxed">
                   Stwórz spersonalizowaną opowieść o wybranej krainie, z morałem i unikalnymi kolorowankami.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto pt-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-xl mx-auto pt-2">
                 <button
                   type="button"
                   onClick={() => {
                     setStep(1);
                     setErrorMsg("");
                   }}
-                  className="p-6 bg-[#6B705C] hover:bg-[#585c4b] text-white rounded-2xl shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all flex flex-col items-center justify-center gap-3 cursor-pointer group"
+                  className="p-8 bg-[#6B705C] hover:bg-[#585c4b] text-white rounded-2xl shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all flex flex-col items-center justify-center gap-3.5 cursor-pointer group"
                 >
-                  <Sparkles className="w-8 h-8 text-[#D4A373] group-hover:animate-pulse" />
+                  <Sparkles className="w-9 h-9 text-[#D4A373] group-hover:animate-pulse" />
                   <div>
-                    <span className="block font-bold text-sm">+ Stwórz nową bajkę</span>
-                    <span className="block text-[10px] opacity-75 mt-0.5 font-medium">5-stronicowa przygoda gratis</span>
+                    <span className="block font-black text-base md:text-lg">+ Stwórz nową bajkę</span>
+                    <span className="block text-[11px] text-[#FAF9F6]/90 mt-1 font-semibold tracking-wide">15-rozdziałowa opowieść (1. strona gratis)</span>
                   </div>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setShowHistoryList(prev => !prev)}
-                  className={`p-6 border-2 rounded-2xl hover:scale-[1.01] active:scale-[0.99] transition-all flex flex-col items-center justify-center gap-3 cursor-pointer ${
+                  className={`p-8 border-2 rounded-2xl hover:scale-[1.01] active:scale-[0.99] transition-all flex flex-col items-center justify-center gap-3.5 cursor-pointer ${
                     showHistoryList 
                       ? "border-[#D4A373] bg-[#FAF9F6] text-[#2D3142]" 
-                      : "border-slate-100 bg-white text-slate-600 hover:border-slate-200"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-slate-350"
                   }`}
                 >
-                  <BookOpen className="w-8 h-8 text-slate-400" />
+                  <BookOpen className="w-9 h-9 text-[#D4A373]" />
                   <div>
-                    <span className="block font-bold text-sm">Moje poprzednie bajki</span>
-                    <span className="block text-[10px] text-slate-400 mt-0.5 font-medium">
+                    <span className="block font-black text-base md:text-lg">Moje poprzednie bajki</span>
+                    <span className="block text-[11px] text-slate-500 mt-1 font-semibold">
                       Zapisane: {savedStories.length}
                     </span>
                   </div>
@@ -983,16 +983,16 @@ export default function App() {
 
               {showHistoryList && (
                 <div className="border-t border-[#E5E5E1] pt-6 text-left max-w-xl mx-auto space-y-4 animate-fadeIn">
-                  <h3 className="text-xs font-serif font-extrabold uppercase tracking-widest text-[#9A9A92]">
+                  <h3 className="text-xs md:text-sm font-serif font-black uppercase tracking-wider text-[#7C7C71]">
                     Twoje dotychczasowe bajki:
                   </h3>
                   
                   {savedStories.length === 0 ? (
-                    <p className="text-xs text-slate-400 font-medium italic text-center py-4 bg-slate-50 rounded-2xl border border-dashed font-sans">
+                    <p className="text-xs md:text-sm text-slate-500 font-medium italic text-center py-6 bg-slate-50 rounded-2xl border border-dashed font-sans">
                       Nie masz jeszcze żadnych ułożonych bajek. Kliknij "+ Stwórz nową bajkę", aby zacząć!
                     </p>
                   ) : (
-                    <div className="grid grid-cols-1 gap-2.5 max-h-[250px] overflow-y-auto pr-1">
+                    <div className="grid grid-cols-1 gap-3 max-h-[280px] overflow-y-auto pr-1">
                       {savedStories.map((saved) => {
                         const unlockedCount = Object.keys(saved.unlockedPages).length;
                         return (
@@ -1000,17 +1000,17 @@ export default function App() {
                             key={saved.id}
                             type="button"
                             onClick={() => loadSavedStory(saved)}
-                            className="p-4 bg-slate-50 border border-slate-100 rounded-xl hover:border-[#D4A373] text-left transition-all cursor-pointer hover:bg-white flex items-center justify-between gap-4 group"
+                            className="p-4 bg-slate-50 border border-slate-150 rounded-xl hover:border-[#D4A373] text-left transition-all cursor-pointer hover:bg-white flex items-center justify-between gap-4 group"
                           >
                             <div className="space-y-1">
-                              <span className="font-serif font-black text-xs text-slate-800 block group-hover:text-[#D4A373]">
+                              <span className="font-serif font-black text-sm text-slate-800 block group-hover:text-[#D4A373] transition-colors">
                                 {saved.story.title || `Bajka dla ${saved.preferences.childName}`}
                               </span>
-                              <span className="text-[10px] text-slate-400 block font-medium font-sans">
+                              <span className="text-xs text-slate-500 block font-medium font-sans">
                                 Bohater: {saved.preferences.childName} ({saved.preferences.archetype}) • Kraina: {saved.preferences.world}
                               </span>
                             </div>
-                            <span className="shrink-0 text-[10px] font-bold text-slate-500 bg-white border px-2.5 py-1 rounded-full group-hover:bg-[#FAF9F6] font-mono">
+                            <span className="shrink-0 text-xs font-bold text-[#D4A373] bg-[#FDFBF7] border border-[#E5E5E1] px-3 py-1 rounded-full group-hover:bg-[#FAF9F6] font-mono">
                               {unlockedCount} / 15 kolorowanek
                             </span>
                           </button>
@@ -1517,7 +1517,7 @@ export default function App() {
       )}
 
       {/* Stopka - widoczna na każdej stronie prócz wydruku */}
-      <footer className="w-full bg-[#FAF9F6] py-6 border-t border-[#E5E5E1]/60 text-center text-[11px] text-[#9A9A92] print:hidden">
+      <footer className="w-full bg-[#FAF9F6] py-6 border-t border-[#E5E5E1]/60 text-center text-xs md:text-sm text-[#7C7C71] print:hidden">
         <p className="font-sans">
           © 2026 Malowana Opowieść ·{" "}
           <a 
@@ -1531,7 +1531,7 @@ export default function App() {
           · Kontakt:{" "}
           <a 
             href="mailto:fabryka.t3kstu@gmail.com" 
-            className="hover:text-[#D4A373] transition-colors"
+            className="hover:text-[#D4A373] transition-colors font-semibold"
           >
             fabryka.t3kstu@gmail.com
           </a>
