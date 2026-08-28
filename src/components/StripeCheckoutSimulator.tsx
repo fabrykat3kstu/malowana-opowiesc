@@ -88,7 +88,7 @@ export default function StripeCheckoutSimulator({ childName, onClose }: StripeCh
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#000000]/60 backdrop-blur-md p-4 animate-fadeIn">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col animate-scaleIn font-sans">
+      <div className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/70 overflow-hidden flex flex-col animate-scaleIn font-sans">
         
         {/* Stripe Official Styled Header */}
         <div className="bg-[#635BFF] text-white p-5 flex items-center justify-between shadow-sm">
@@ -255,9 +255,9 @@ export default function StripeCheckoutSimulator({ childName, onClose }: StripeCh
               <button
                 onClick={handlePay}
                 disabled={!acceptedTerms}
-                className={`w-full p-3.5 rounded-full font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all font-sans ${
+                className={`w-full p-3.5 rounded-full font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all duration-200 font-sans ${
                   acceptedTerms 
-                    ? "bg-[#635BFF] text-white cursor-pointer hover:bg-[#544CF0] hover:scale-[1.01] active:scale-[0.99]" 
+                    ? "bg-[#635BFF] text-white cursor-pointer hover:bg-[#544CF0] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#635BFF]/25 active:translate-y-0" 
                     : "bg-slate-200 text-slate-400 cursor-not-allowed"
                 }`}
               >

@@ -598,7 +598,11 @@ export default function App() {
 
   if (window.location.pathname === "/regulamin") {
     return (
-      <div id="app-root" className="min-h-screen w-full bg-[#FAF9F6] text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
+      <div id="app-root" className="min-h-screen w-full bg-gradient-to-tr from-amber-50 via-rose-50 to-sky-50 text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
+        {/* Aurora Mesh Gradient Shapes */}
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full filter blur-3xl opacity-35 bg-amber-200 animate-pulse pointer-events-none print:hidden"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full filter blur-3xl opacity-40 bg-rose-200 animate-pulse pointer-events-none print:hidden" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-[40%] left-[60%] w-[40%] h-[40%] rounded-full filter blur-3xl opacity-25 bg-sky-200 animate-pulse pointer-events-none print:hidden" style={{ animationDelay: '4s' }}></div>
         {hudMessage && (
           <div className="fixed top-6 right-6 z-50 bg-[#1A1C23] text-white px-5 py-3 rounded-xl shadow-lg border border-slate-700 text-xs font-semibold tracking-wide flex items-center gap-2 animate-fadeIn print:hidden">
             <Sparkles className="text-[#D4A373] animate-pulse w-4 h-4" />
@@ -676,7 +680,11 @@ export default function App() {
   }
 
   return (
-    <div id="app-root" className="min-h-screen w-full bg-[#FAF9F6] text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
+    <div id="app-root" className="min-h-screen w-full bg-gradient-to-tr from-amber-50 via-rose-50 to-sky-50 text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
+      {/* Aurora Mesh Gradient Shapes */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full filter blur-3xl opacity-35 bg-amber-200 animate-pulse pointer-events-none print:hidden"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full filter blur-3xl opacity-40 bg-rose-200 animate-pulse pointer-events-none print:hidden" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute top-[40%] left-[60%] w-[40%] h-[40%] rounded-full filter blur-3xl opacity-25 bg-sky-200 animate-pulse pointer-events-none print:hidden" style={{ animationDelay: '4s' }}></div>
       
       {hudMessage && (
         <div className="fixed top-6 right-6 z-50 bg-[#1A1C23] text-white px-5 py-3 rounded-xl shadow-lg border border-slate-700 text-xs font-semibold tracking-wide flex items-center gap-2 animate-fadeIn print:hidden">
@@ -722,7 +730,7 @@ export default function App() {
       <div className="flex-1 flex flex-col md:flex-row h-full relative z-10 overflow-hidden print:hidden">
         
         {step > 0 && step < 5 && (
-          <aside className="w-full md:w-[360px] bg-white border-b md:border-b-0 md:border-r border-[#E5E5E1] p-6 md:p-8 flex flex-col justify-between gap-6 overflow-y-auto print:hidden">
+          <aside className="w-full md:w-[360px] bg-white/80 backdrop-blur-md border-b md:border-b-0 md:border-r border-white/60 p-6 md:p-8 flex flex-col justify-between gap-6 overflow-y-auto print:hidden shadow-[0_10px_35px_rgba(0,0,0,0.03)]">
             <div className="space-y-6">
               
               <div className="flex items-center justify-between pb-4 border-b">
@@ -759,16 +767,16 @@ export default function App() {
                     )}
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Płeć dziecka</label>
+                   <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Płeć dziecka</label>
                     <div className="grid grid-cols-2 gap-3">
                       <button
                         type="button"
                         onClick={() => setPreferences({ ...preferences, childGender: "girl" })}
-                        className={`py-3 rounded-xl border-2 text-xs font-bold transition-all cursor-pointer ${
+                        className={`py-3.5 rounded-2xl flex flex-col items-center justify-center text-xs font-black transition-all cursor-pointer ${
                           preferences.childGender === "girl"
-                            ? "border-[#D4A373] bg-[#FAF9F6] text-[#2D3142]"
-                            : "border-slate-100 bg-white text-slate-400 opacity-60"
+                            ? "bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-[#D4A373] text-slate-800 shadow-md ring-4 ring-[#D4A373]/20 -translate-y-0.5"
+                            : "bg-white/60 border border-slate-200/80 text-slate-500 hover:border-amber-300 hover:bg-amber-50/40"
                         }`}
                       >
                         Dziewczynka
@@ -776,10 +784,10 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => setPreferences({ ...preferences, childGender: "boy" })}
-                        className={`py-3 rounded-xl border-2 text-xs font-bold transition-all cursor-pointer ${
+                        className={`py-3.5 rounded-2xl flex flex-col items-center justify-center text-xs font-black transition-all cursor-pointer ${
                           preferences.childGender === "boy"
-                            ? "border-[#D4A373] bg-[#FAF9F6] text-[#2D3142]"
-                            : "border-slate-100 bg-white text-slate-400 opacity-60"
+                            ? "bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-[#D4A373] text-slate-800 shadow-md ring-4 ring-[#D4A373]/20 -translate-y-0.5"
+                            : "bg-white/60 border border-slate-200/80 text-slate-500 hover:border-amber-300 hover:bg-amber-50/40"
                         }`}
                       >
                         Chłopiec
@@ -807,81 +815,97 @@ export default function App() {
 
               {step === 2 && (
                 <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Postać biorąca udział w bajce</label>
-                  <div className="grid grid-cols-1 gap-2 max-h-[380px] overflow-y-auto pr-1">
-                    {ARCHETYPES.map((arch) => (
-                      <button
-                        key={arch.id}
-                        type="button"
-                        onClick={() => setPreferences({ ...preferences, archetype: arch.id })}
-                        className={`p-3 border-2 rounded-xl flex items-center gap-3 text-left transition-all cursor-pointer ${
-                          preferences.archetype === arch.id
-                            ? "border-[#D4A373] bg-[#FAF9F6]"
-                            : "border-transparent bg-[#FAF9F6]/60"
-                        }`}
-                      >
-                        <div className={`p-2 rounded-lg ${preferences.archetype === arch.id ? "bg-[#D4A373] text-white" : "bg-white text-slate-400"}`}>
-                          {getArchetypeIcon(arch.id)}
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-xs">{arch.label}</h4>
-                          <p className="text-[10px] text-slate-400 mt-0.5">{arch.description}</p>
-                        </div>
-                      </button>
-                    ))}
+                  <label className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Postać biorąca udział w bajce</label>
+                  <div className="grid grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1">
+                    {ARCHETYPES.map((arch) => {
+                      const isSelected = preferences.archetype === arch.id;
+                      return (
+                        <button
+                          key={arch.id}
+                          type="button"
+                          onClick={() => setPreferences({ ...preferences, archetype: arch.id })}
+                          className={`p-4 rounded-2xl flex flex-col items-start text-left transition-all duration-200 cursor-pointer ${
+                            isSelected
+                              ? "bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-[#D4A373] shadow-md ring-4 ring-[#D4A373]/20 -translate-y-1 font-semibold"
+                              : "bg-white/60 border border-slate-200/80 hover:border-amber-300 hover:bg-amber-50/40 hover:-translate-y-0.5"
+                          }`}
+                        >
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-2.5 transition-all ${
+                            isSelected ? "bg-[#D4A373] text-white" : "bg-amber-100/60 text-[#D4A373]"
+                          }`}>
+                            {getArchetypeIcon(arch.id)}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-xs text-slate-800">{arch.label}</h4>
+                            <p className="text-[10px] text-slate-500 mt-1 leading-snug">{arch.description}</p>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
               {step === 3 && (
                 <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Wybierz magiczną krainę</label>
-                  <div className="grid grid-cols-1 gap-2 max-h-[380px] overflow-y-auto pr-1">
-                    {WORLDS.map((wld) => (
-                      <button
-                        key={wld.id}
-                        type="button"
-                        onClick={() => setPreferences({ ...preferences, world: wld.id })}
-                        className={`p-3 border-2 rounded-xl flex items-center gap-3 text-left transition-all cursor-pointer ${
-                          preferences.world === wld.id
-                            ? "border-[#D4A373] bg-[#FAF9F6]"
-                            : "border-transparent bg-[#FAF9F6]/60"
-                        }`}
-                      >
-                        <div className={`p-2 rounded-lg ${preferences.world === wld.id ? "bg-[#D4A373] text-white" : "bg-white text-slate-400"}`}>
-                          {getWorldIcon(wld.id)}
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-xs">{wld.label}</h4>
-                          <p className="text-[10px] text-slate-400 mt-0.5">{wld.description}</p>
-                        </div>
-                      </button>
-                    ))}
+                  <label className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Wybierz magiczną krainę</label>
+                  <div className="grid grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1">
+                    {WORLDS.map((wld) => {
+                      const isSelected = preferences.world === wld.id;
+                      return (
+                        <button
+                          key={wld.id}
+                          type="button"
+                          onClick={() => setPreferences({ ...preferences, world: wld.id })}
+                          className={`p-4 rounded-2xl flex flex-col items-start text-left transition-all duration-200 cursor-pointer ${
+                            isSelected
+                              ? "bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-[#D4A373] shadow-md ring-4 ring-[#D4A373]/20 -translate-y-1 font-semibold"
+                              : "bg-white/60 border border-slate-200/80 hover:border-amber-300 hover:bg-amber-50/40 hover:-translate-y-0.5"
+                          }`}
+                        >
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-2.5 transition-all ${
+                            isSelected ? "bg-[#D4A373] text-white" : "bg-amber-100/60 text-[#D4A373]"
+                          }`}>
+                            {getWorldIcon(wld.id)}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-xs text-slate-800">{wld.label}</h4>
+                            <p className="text-[10px] text-slate-500 mt-1 leading-snug">{wld.description}</p>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
               {step === 4 && (
                 <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Nauka moralna płynąca z bajki</label>
-                  <div className="space-y-2">
-                    {MORALS.map((moral) => (
-                      <button
-                        key={moral.id}
-                        type="button"
-                        onClick={() => setPreferences({ ...preferences, moral: moral.id })}
-                        className={`w-full p-4 border-2 rounded-xl flex flex-col items-start text-left transition-all cursor-pointer ${
-                          preferences.moral === moral.id
-                            ? "border-[#D4A373] bg-[#FAF9F6]"
-                            : "border-transparent bg-[#FAF9F6]/60"
-                        }`}
-                      >
-                        <span className="font-bold text-xs flex items-center gap-1.5 mb-1">
-                          {getMoralIcon(moral.id)} {moral.label}
-                        </span>
-                        <p className="text-[10px] text-slate-400">{moral.description}</p>
-                      </button>
-                    ))}
+                  <label className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Nauka moralna płynąca z bajki</label>
+                  <div className="space-y-3">
+                    {MORALS.map((moral) => {
+                      const isSelected = preferences.moral === moral.id;
+                      return (
+                        <button
+                          key={moral.id}
+                          type="button"
+                          onClick={() => setPreferences({ ...preferences, moral: moral.id })}
+                          className={`w-full p-4 rounded-2xl flex flex-col items-start text-left transition-all duration-200 cursor-pointer ${
+                            isSelected
+                              ? "bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-[#D4A373] shadow-md ring-4 ring-[#D4A373]/20 -translate-y-0.5 font-semibold"
+                              : "bg-white/60 border border-slate-200/80 hover:border-amber-300 hover:bg-amber-50/40 hover:-translate-y-0.5"
+                          }`}
+                        >
+                          <span className="font-bold text-xs flex items-center gap-2 mb-1.5 text-slate-800">
+                            <span className={`p-1.5 rounded-lg transition-all ${isSelected ? 'bg-[#D4A373] text-white' : 'bg-amber-100/60 text-[#D4A373]'}`}>
+                              {getMoralIcon(moral.id)}
+                            </span>
+                            {moral.label}
+                          </span>
+                          <p className="text-[10px] text-slate-500 leading-relaxed pl-8">{moral.description}</p>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -913,7 +937,7 @@ export default function App() {
                     setErrorMsg("");
                     setStep(step + 1);
                   }}
-                  className="flex-1 py-3 bg-[#1A1C23] hover:bg-black text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 py-3 bg-[#1A1C23] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 cursor-pointer hover:bg-black hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/20 active:translate-y-0 transition-all duration-200 shadow-sm"
                 >
                   Dalej <ChevronRight className="w-3.5 h-3.5" />
                 </button>
@@ -921,7 +945,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={handleGenerateStory}
-                  className="flex-1 py-3.5 bg-[#6B705C] hover:bg-[#585c4b] text-white text-xs font-black rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 py-3.5 bg-[#6B705C] text-white text-xs font-black rounded-xl flex items-center justify-center gap-1.5 cursor-pointer hover:bg-[#585c4b] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/20 active:translate-y-0 transition-all duration-200 shadow-sm"
                 >
                   Stwórz magiczną bajkę
                 </button>
@@ -930,10 +954,10 @@ export default function App() {
           </aside>
         )}
 
-        <section className="flex-1 p-6 md:p-12 flex flex-col items-center justify-center bg-[#F2F1EC] relative overflow-y-auto print:bg-white print:p-0 print:overflow-visible">
+        <section className="flex-1 p-6 md:p-12 flex flex-col items-center justify-center bg-transparent relative overflow-y-auto print:bg-white print:p-0 print:overflow-visible">
           
           {step === -1 && (
-            <div className="max-w-2xl w-full bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-[#E5E5E1] text-center space-y-8 animate-fadeIn print:hidden">
+            <div className="max-w-2xl w-full bg-white/80 backdrop-blur-md border border-white/70 shadow-[0_10px_35px_rgba(0,0,0,0.05)] p-8 md:p-12 rounded-3xl text-center space-y-8 animate-fadeIn print:hidden">
               <div className="space-y-3">
                 <div className="w-16 h-16 bg-[#D4A373]/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#D4A373]/20">
                   <Paintbrush className="text-[#D4A373] w-8 h-8" />
@@ -953,7 +977,7 @@ export default function App() {
                     setStep(1);
                     setErrorMsg("");
                   }}
-                  className="p-8 bg-[#6B705C] hover:bg-[#585c4b] text-white rounded-2xl shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all flex flex-col items-center justify-center gap-3.5 cursor-pointer group"
+                  className="p-8 bg-[#6B705C] text-white rounded-2xl shadow-md hover:bg-[#585c4b] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/20 active:translate-y-0 transition-all duration-200 flex flex-col items-center justify-center gap-3.5 cursor-pointer group"
                 >
                   <Sparkles className="w-9 h-9 text-[#D4A373] group-hover:animate-pulse" />
                   <div>
@@ -1095,15 +1119,17 @@ export default function App() {
             const cover = getCoverTheme();
             const title = getDynamicTitle();
             return (
-              <div className="flex flex-col items-center gap-6 w-full max-w-[400px] animate-fadeIn print:hidden">
-                <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#9A9A92]">
+              <div className="flex flex-col items-center gap-6 w-full max-w-[400px] animate-fadeIn print:hidden [perspective:1000px]">
+                <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#7C7C71]">
                   Podgląd Twojej książki w czasie rzeczywistym:
                 </span>
                 
                 {/* Wirtualna Okładka Książki */}
                 <div 
-                  className={`w-full aspect-[3/4] bg-gradient-to-br ${cover.bg} border rounded-r-2xl rounded-l-sm shadow-2xl relative overflow-hidden flex flex-col justify-between p-8 border-l-[10px] border-l-black/35 ${cover.shadow} transition-all duration-500 group hover:scale-[1.02] hover:shadow-3xl`}
+                  className={`w-full aspect-[3/4] bg-gradient-to-br ${cover.bg} border rounded-r-2xl rounded-l-md border-l-8 border-amber-700/60 shadow-2xl relative overflow-hidden flex flex-col justify-between p-8 ${cover.shadow} transition-all duration-500 group hover:scale-[1.02] hover:shadow-3xl [transform-style:preserve-3d] hover:[transform:rotateY(-4deg)]`}
                 >
+                  {/* Efekt zagięcia grzbietu książki */}
+                  <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-black/15 to-transparent pointer-events-none z-20"></div>
                   {/* Efekt połysku/światła na okładce (Glassmorphism & Gradient Highlight) */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 pointer-events-none"></div>
                   <div className="absolute top-0 bottom-0 left-0 w-[1px] bg-white/20 pointer-events-none"></div>
@@ -1177,7 +1203,7 @@ export default function App() {
           })()}
 
           {step === 5 && story && unlockedCount === 15 && !isAllImagesLoaded ? (
-            <div className="flex flex-col items-center justify-center min-h-[50vh] w-full max-w-[450px] bg-white rounded-2xl shadow-2xl p-8 border border-[#E5E5E1] text-center space-y-6 animate-fadeIn print:hidden">
+            <div className="flex flex-col items-center justify-center min-h-[50vh] w-full max-w-[450px] bg-white/80 backdrop-blur-md border border-white/70 shadow-[0_10px_35px_rgba(0,0,0,0.05)] p-8 rounded-3xl text-center space-y-6 animate-fadeIn print:hidden">
               <div className="relative w-20 h-20 flex items-center justify-center mx-auto">
                 <div className="absolute inset-0 border-4 border-[#D4A373]/20 border-t-[#D4A373] rounded-full animate-spin"></div>
                 <Sparkles className="w-8 h-8 text-[#D4A373] animate-pulse" />
@@ -1263,7 +1289,7 @@ export default function App() {
                     <img
                       src={imagesMap[currentPageIndex]}
                       alt="Ilustracja Kolorowanki"
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain animate-in fade-in zoom-in-95 duration-300"
                       onError={() => {
                         handleImageFailure(currentPageIndex, "Ilustracja wygasła lub nie udało się jej pobrać.");
                       }}
