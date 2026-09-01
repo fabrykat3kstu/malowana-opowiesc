@@ -95,20 +95,29 @@ export default function StripeCheckoutSimulator({ childName, onClose }: StripeCh
     <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
       <div className="w-full max-w-md max-h-[92vh] bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col my-auto animate-scaleIn font-sans">
         
-        {/* Stripe Official Styled Header - Compact & Clean without any badge overlapping the logo */}
-        <div className="relative h-14 bg-[#635BFF] flex items-center justify-center overflow-hidden shrink-0 border-b border-indigo-500/20">
+        {/* Stripe Official Styled Header with breathing room */}
+        <div className="relative h-16 bg-gradient-to-r from-[#6754FE] via-[#635BFF] to-[#4389FF] flex items-center justify-center overflow-hidden shrink-0 border-b border-indigo-400/20">
+          {/* Subtle ambient image texture */}
           <img 
             src="/stripe-logo.jpg" 
-            alt="Stripe" 
-            className="h-full w-full object-cover object-center"
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20 filter blur-xs pointer-events-none"
           />
+          
+          {/* Crisp, beautifully breathing Stripe Logo */}
+          <div className="relative z-10 flex items-center justify-center py-3">
+            <svg className="h-6 sm:h-7 w-auto text-white fill-current drop-shadow-xs" viewBox="0 0 80 32" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.9 14.8c0-3.3 1.9-4.8 5-4.8 2.1 0 3.7.6 4.6 1.1v-4.5c-.9-.4-2.8-.8-4.9-.8-6.1 0-9.8 3.5-9.8 9.3 0 6.6 4.3 8.7 8.7 9.5 3.3.6 4.4 1.4 4.4 2.9 0 1.5-1.5 2.5-4.2 2.5-2.5 0-4.7-.8-5.7-1.4v4.5c1.1.5 3.4 1 5.8 1 6.5 0 9.4-3.4 9.4-8.8 0-6.1-4.2-8.3-8.8-9.1-3.3-.6-4.5-1.3-4.5-2.7zm18.6-8.5c-2.3 0-3.7 1-4.4 1.9v-1.6h-4.9v25.2l5.1-1.1V17.9c.7 1.1 2.2 1.7 4 1.7 3.8 0 6.9-3.1 6.9-7.4 0-4.1-3-7.2-6.7-7.2zm-.9 10.4c-2.1 0-3.3-1.6-3.3-3.2 0-1.7 1.2-3.2 3.3-3.2 2.1 0 3.2 1.5 3.2 3.2 0 1.7-1.1 3.2-3.2 3.2zm11.7-10.4h-5.1v14.1h5.1V6.3zm-2.6-6.1c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3zm18 12.5c0-4.6-2.1-6.4-5.3-6.4-2 0-3.6.8-4.4 2v-1.7h-4.9v14.1h5.1v-7.9c0-1.9 1.1-2.9 2.8-2.9.8 0 1.5.2 2 .5l.7-4.7c-.5-.2-1.2-.3-1.9-.3-1.7 0-3 .8-3.6 2.1v-.8zm9.5-6.1c-4.4 0-7.3 3.1-7.3 7.4 0 4.2 2.8 7.2 7 7.2 2.5 0 4.3-.8 5.3-1.5l-1.1-3.4c-.7.4-2 .8-3.3.8-1.9 0-3.1-.9-3.3-2.4h8.3c.1-.4.1-.8.1-1.3 0-4.2-2.6-6.8-5.8-6.8zm-2.5 5.5c.2-1.4 1.2-2.3 2.5-2.3 1.3 0 2 .9 2.1 2.3h-4.6z"/>
+            </svg>
+          </div>
+
           <button 
             type="button"
             onClick={onClose}
             aria-label="Zamknij"
-            className="absolute top-2.5 right-3 text-white/90 hover:text-white bg-black/30 hover:bg-black/60 p-1.5 rounded-full transition-all cursor-pointer z-20 shadow-xs"
+            className="absolute top-3 right-3.5 text-white/80 hover:text-white bg-black/20 hover:bg-black/40 p-1.5 rounded-full transition-all cursor-pointer z-20 shadow-xs"
           >
-            <X size={16} />
+            <X size={15} />
           </button>
         </div>
 
