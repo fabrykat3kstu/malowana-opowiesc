@@ -95,21 +95,21 @@ export default function StripeCheckoutSimulator({ childName, onClose }: StripeCh
     <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
       <div className="w-full max-w-md max-h-[92vh] bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col my-auto animate-scaleIn font-sans">
         
-        {/* Stripe Official Styled Header with breathing room */}
-        <div className="relative h-16 bg-gradient-to-r from-[#6754FE] via-[#635BFF] to-[#4389FF] flex items-center justify-center overflow-hidden shrink-0 border-b border-indigo-400/20">
-          {/* Subtle ambient image texture */}
-          <img 
-            src="/stripe-logo.jpg" 
-            alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-20 filter blur-xs pointer-events-none"
-          />
-          
-          {/* Crisp, beautifully breathing Stripe Logo */}
-          <div className="relative z-10 flex items-center justify-center py-3">
-            <svg className="h-6 sm:h-7 w-auto text-white fill-current drop-shadow-xs" viewBox="0 0 80 32" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.9 14.8c0-3.3 1.9-4.8 5-4.8 2.1 0 3.7.6 4.6 1.1v-4.5c-.9-.4-2.8-.8-4.9-.8-6.1 0-9.8 3.5-9.8 9.3 0 6.6 4.3 8.7 8.7 9.5 3.3.6 4.4 1.4 4.4 2.9 0 1.5-1.5 2.5-4.2 2.5-2.5 0-4.7-.8-5.7-1.4v4.5c1.1.5 3.4 1 5.8 1 6.5 0 9.4-3.4 9.4-8.8 0-6.1-4.2-8.3-8.8-9.1-3.3-.6-4.5-1.3-4.5-2.7zm18.6-8.5c-2.3 0-3.7 1-4.4 1.9v-1.6h-4.9v25.2l5.1-1.1V17.9c.7 1.1 2.2 1.7 4 1.7 3.8 0 6.9-3.1 6.9-7.4 0-4.1-3-7.2-6.7-7.2zm-.9 10.4c-2.1 0-3.3-1.6-3.3-3.2 0-1.7 1.2-3.2 3.3-3.2 2.1 0 3.2 1.5 3.2 3.2 0 1.7-1.1 3.2-3.2 3.2zm11.7-10.4h-5.1v14.1h5.1V6.3zm-2.6-6.1c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3zm18 12.5c0-4.6-2.1-6.4-5.3-6.4-2 0-3.6.8-4.4 2v-1.7h-4.9v14.1h5.1v-7.9c0-1.9 1.1-2.9 2.8-2.9.8 0 1.5.2 2 .5l.7-4.7c-.5-.2-1.2-.3-1.9-.3-1.7 0-3 .8-3.6 2.1v-.8zm9.5-6.1c-4.4 0-7.3 3.1-7.3 7.4 0 4.2 2.8 7.2 7 7.2 2.5 0 4.3-.8 5.3-1.5l-1.1-3.4c-.7.4-2 .8-3.3.8-1.9 0-3.1-.9-3.3-2.4h8.3c.1-.4.1-.8.1-1.3 0-4.2-2.6-6.8-5.8-6.8zm-2.5 5.5c.2-1.4 1.2-2.3 2.5-2.3 1.3 0 2 .9 2.1 2.3h-4.6z"/>
-            </svg>
-          </div>
+        {/* Stripe Official Styled Header with generous breathing room */}
+        <div className="relative h-16 bg-[#635BFF] flex items-center justify-center overflow-hidden shrink-0 border-b border-indigo-400/20 px-6">
+          <svg 
+            className="h-7 sm:h-8 w-auto text-white fill-current drop-shadow-xs" 
+            viewBox="54 36 360.02 149.84" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path fillRule="evenodd" clipRule="evenodd" d="M414,113.4c0-25.6-12.4-45.8-36.1-45.8c-23.8,0-38.2,20.2-38.2,45.6c0,30.1,17,45.3,41.4,45.3 c11.9,0,20.9-2.7,27.7-6.5v-20c-6.8,3.4-14.6,5.5-24.5,5.5c-9.7,0-18.3-3.4-19.4-15.2h48.9C413.8,121,414,115.8,414,113.4z M364.6,103.9c0-11.3,6.9-16,13.2-16c6.1,0,12.6,4.7,12.6,16H364.6z"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M301.1,67.6c-9.8,0-16.1,4.6-19.6,7.8l-1.3-6.2h-22v116.6l25-5.3l0.1-28.3c3.6,2.6,8.9,6.3,17.7,6.3 c17.9,0,34.2-14.4,34.2-46.1C335.1,83.4,318.6,67.6,301.1,67.6z M295.1,136.5c-5.9,0-9.4-2.1-11.8-4.7l-0.1-37.1 c2.6-2.9,6.2-4.9,11.9-4.9c9.1,0,15.4,10.2,15.4,23.3C310.5,126.5,304.3,136.5,295.1,136.5z"/>
+            <polygon points="223.8,61.7 248.9,56.3 248.9,36 223.8,41.3"/>
+            <rect x="223.8" y="69.3" width="25.1" height="87.5"/>
+            <path d="M196.9,76.7l-1.6-7.4h-21.6v87.5h25V97.5c5.9-7.7,15.9-6.3,19-5.2v-23C214.5,68.1,202.8,65.9,196.9,76.7z"/>
+            <path d="M146.9,47.6l-24.4,5.2l-0.1,80.1c0,14.8,11.1,25.7,25.9,25.7c8.2,0,14.2-1.5,17.5-3.3V135 c-3.2,1.3-19,5.9-19-8.9V90.6h19V69.3h-19L146.9,47.6z"/>
+            <path d="M79.3,94.7c0-3.9,3.2-5.4,8.5-5.4c7.6,0,17.2,2.3,24.8,6.4V72.2c-8.3-3.3-16.5-4.6-24.8-4.6 C67.5,67.6,54,78.2,54,95.9c0,27.6,38,23.2,38,35.1c0,4.6-4,6.1-9.6,6.1c-8.3,0-18.9-3.4-27.3-8v23.8c9.3,4,18.7,5.7,27.3,5.7 c20.8,0,35.1-10.3,35.1-28.2C117.4,100.6,79.3,105.9,79.3,94.7z"/>
+          </svg>
 
           <button 
             type="button"
