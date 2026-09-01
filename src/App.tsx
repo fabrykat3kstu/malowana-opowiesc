@@ -598,11 +598,7 @@ export default function App() {
 
   if (window.location.pathname === "/regulamin") {
     return (
-      <div id="app-root" className="min-h-screen w-full bg-gradient-to-tr from-amber-50 via-rose-50 to-sky-50 text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
-        {/* Aurora Mesh Gradient Shapes */}
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full filter blur-3xl opacity-35 bg-amber-200 animate-pulse pointer-events-none print:hidden"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full filter blur-3xl opacity-40 bg-rose-200 animate-pulse pointer-events-none print:hidden" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-[40%] left-[60%] w-[40%] h-[40%] rounded-full filter blur-3xl opacity-25 bg-sky-200 animate-pulse pointer-events-none print:hidden" style={{ animationDelay: '4s' }}></div>
+      <div id="app-root" className="min-h-screen w-full bg-[#FAF9F6] text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
         {hudMessage && (
           <div className="fixed top-6 right-6 z-50 bg-[#1A1C23] text-white px-5 py-3 rounded-xl shadow-lg border border-slate-700 text-xs font-semibold tracking-wide flex items-center gap-2 animate-fadeIn print:hidden">
             <Sparkles className="text-[#D4A373] animate-pulse w-4 h-4" />
@@ -680,11 +676,7 @@ export default function App() {
   }
 
   return (
-    <div id="app-root" className="min-h-screen w-full bg-gradient-to-tr from-amber-50 via-rose-50 to-sky-50 text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
-      {/* Aurora Mesh Gradient Shapes */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full filter blur-3xl opacity-35 bg-amber-200 animate-pulse pointer-events-none print:hidden"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full filter blur-3xl opacity-40 bg-rose-200 animate-pulse pointer-events-none print:hidden" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute top-[40%] left-[60%] w-[40%] h-[40%] rounded-full filter blur-3xl opacity-25 bg-sky-200 animate-pulse pointer-events-none print:hidden" style={{ animationDelay: '4s' }}></div>
+    <div id="app-root" className="min-h-screen w-full bg-[#FAF9F6] text-[#2D3142] font-sans flex flex-col overflow-x-hidden relative">
       
       {hudMessage && (
         <div className="fixed top-6 right-6 z-50 bg-[#1A1C23] text-white px-5 py-3 rounded-xl shadow-lg border border-slate-700 text-xs font-semibold tracking-wide flex items-center gap-2 animate-fadeIn print:hidden">
