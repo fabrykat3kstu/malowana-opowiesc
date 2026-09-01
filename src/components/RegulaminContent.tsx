@@ -59,9 +59,8 @@ export default function RegulaminContent() {
                 <p>
                   Korzystanie z serwisu oraz dokonanie zakupu oznacza pełną akceptację niniejszych zasad.
                 </p>
-                <div className="pt-2 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-2 font-sans text-xs text-slate-400">
-                  <span><strong>Administrator:</strong> Fabryka Tekstu, Warszawa, Polska</span>
-                  <span><strong>Kontakt:</strong> <a href="mailto:fabryka.t3kstu@gmail.com" className="text-[#D4A373] hover:underline font-bold">fabryka.t3kstu@gmail.com</a></span>
+                <div className="pt-2 border-t border-slate-100 flex flex-col font-sans text-xs text-slate-600 space-y-1">
+                  <p><strong>Usługodawca i Sprzedawca:</strong> Usługodawcą i Administratorem Danych Osobowych jest Paweł Kmiecik, prowadzący działalność nierejestrowaną pod marką Fabryka Tekstu, adres: ul. Skrzatów 19/2, 03-259 Warszawa, Polska, e-mail: <a href="mailto:fabryka.t3kstu@gmail.com" className="text-[#D4A373] hover:underline font-bold">fabryka.t3kstu@gmail.com</a>.</p>
                 </div>
               </div>
             </div>
@@ -81,6 +80,9 @@ export default function RegulaminContent() {
                     <strong className="text-slate-800">Dane dziecka:</strong> Podajesz imię dziecka w sposób całkowicie dobrowolny, wyłącznie w celu spersonalizowania generowanej bajki.
                   </li>
                   <li>
+                    <strong className="text-slate-800">Weryfikacja treści przez rodzica:</strong> Użytkownik (rodzic/opiekun prawny) zobowiązuje się do zapoznania z treścią wygenerowanej bajki przed udostępnieniem jej dziecku.
+                  </li>
+                  <li>
                     <strong className="text-slate-800">Legalność:</strong> Zobowiązujesz się do korzystania z serwisu w sposób zgodny z obowiązującym prawem i dobrem dziecka.
                   </li>
                 </ol>
@@ -91,15 +93,20 @@ export default function RegulaminContent() {
             <div className="bg-white rounded-2xl shadow-xs p-6 md:p-8 border border-[#E5E5E1] border-l-4 border-l-[#D4A373] space-y-4">
               <h3 className="font-serif text-lg font-black text-[#1A1C23] flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#D4A373]" />
-                III. Charakter i jakość usługi
+                III. Charakter i jakość usługi (AI Act – Art. 50)
               </h3>
               <div className="bg-[#FAF9F6] border border-[#E5E5E1] p-5 rounded-xl flex items-start gap-4 text-xs md:text-sm text-slate-600 leading-relaxed font-serif">
                 <div className="w-8 h-8 rounded-lg bg-[#D4A373]/10 flex items-center justify-center shrink-0 mt-0.5 text-[#D4A373]">
                   <Sparkles className="w-4 h-4" />
                 </div>
-                <p>
-                  Bajki i ilustracje generowane są automatycznie przez algorytmy AI. Treść ma charakter artystyczny i rozrywkowy. Ilustracje są oryginalne – nie naruszają praw autorskich i nie przedstawiają postaci objętych ochroną prawną (np. z zastrzeżonych bajek komercyjnych).
-                </p>
+                <div className="space-y-2">
+                  <p>
+                    Zgodnie z art. 50 Aktu o Sztucznej Inteligencji (AI Act), informujemy, że treści oraz ilustracje generowane są automatycznie przez algorytmy sztucznej inteligencji (Google Gemini oraz Replicate).
+                  </p>
+                  <p>
+                    Treść ma charakter artystyczny i rozrywkowy. Ilustracje są oryginalne – nie naruszają praw autorskich i nie przedstawiają postaci objętych ochroną prawną (np. z zastrzeżonych bajek komercyjnych). Użytkownik (rodzic/opiekun prawny) zobowiązuje się do zapoznania z treścią wygenerowanej bajki przed udostępnieniem jej dziecku.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -114,7 +121,7 @@ export default function RegulaminContent() {
                   Wszystkie płatności w serwisie są obsługiwane i zabezpieczane przez system <strong>Stripe</strong>. Zakupione bajki (kredyty) są przypisane do konta e-mail i nigdy nie wygasają.
                 </p>
                 <p>
-                  Z uwagi na dostarczenie spersonalizowanych treści o charakterze cyfrowym, które są generowane natychmiast po zleceniu, <strong>prawo do odstąpienia od umowy zakupu jest ustawowo wyłączone</strong> (zgodnie z Art. 38 pkt 13 ustawy o prawach konsumenta), pod warunkiem wyrażenia przez konsumenta zgody przed zakupem.
+                  Z uwagi na dostarczenie spersonalizowanych treści o charakterze cyfrowym, które są generowane natychmiast po zleceniu, <strong>prawo do odstąpienia od umowy zakupu jest ustawowo wyłączone</strong> (zgodnie z Art. 38 pkt 13 ustawy o prawach konsumenta), pod warunkiem wyrażenia przez konsumenta wyraźnej zgody przed zakupem.
                 </p>
                 <div className="bg-rose-50/50 border border-rose-100 p-4 rounded-xl text-slate-600 font-sans text-xs">
                   <strong>Pomoc techniczna:</strong> W przypadku jakichkolwiek problemów technicznych (np. błąd połączenia z API, brak wygenerowania ilustracji) oferujemy ponowne wygenerowanie bajki lub pełny zwrot środków. Prosimy o kontakt mailowy pod adresem <a href="mailto:fabryka.t3kstu@gmail.com" className="text-[#D4A373] hover:underline font-bold">fabryka.t3kstu@gmail.com</a>.
@@ -126,14 +133,14 @@ export default function RegulaminContent() {
             <div className="bg-white rounded-2xl shadow-xs p-6 md:p-8 border border-[#E5E5E1] border-l-4 border-l-[#D4A373] space-y-4">
               <h3 className="font-serif text-lg font-black text-[#1A1C23] flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-[#D4A373]" />
-                V. Własność intelektualna
+                V. Prawa do materiałów
               </h3>
               <div className="text-xs md:text-sm text-slate-600 leading-relaxed space-y-3 font-serif">
                 <p>
-                  Wszelkie wygenerowane spersonalizowane bajki (tekst) oraz ilustracje stają się własnością użytkownika, który je zamówił w momencie ich opłacenia i wygenerowania.
+                  Z chwilą opłacenia i wygenerowania bajki Użytkownik otrzymuje bezterminowe, niewyłączne prawo do swobodnego korzystania, drukowania, modyfikowania i rozpowszechniania wygenerowanych materiałów na użytek prywatny oraz komercyjny.
                 </p>
                 <p>
-                  Serwis Malowana Opowieść nie rości sobie żadnych praw autorskich do treści i grafik stworzonych na zamówienie użytkownika. Możesz ich używać do celów prywatnych i komercyjnych.
+                  Serwis Malowana Opowieść nie ogranicza Użytkownika w zakresie dysponowania pobranym plikiem PDF oraz zawartymi w nim kolorowankami.
                 </p>
               </div>
             </div>
@@ -148,12 +155,13 @@ export default function RegulaminContent() {
               </h3>
               <div className="text-xs md:text-sm text-slate-600 leading-relaxed space-y-3 font-serif">
                 <p>
-                  Administratorem danych osobowych w serwisie Malowana Opowieść jest:
+                  Usługodawcą i Administratorem Danych Osobowych jest Paweł Kmiecik, prowadzący działalność nierejestrowaną pod marką Fabryka Tekstu, adres: ul. Skrzatów 19/2, 03-259 Warszawa, Polska, e-mail: <a href="mailto:fabryka.t3kstu@gmail.com" className="text-[#D4A373] hover:underline font-bold">fabryka.t3kstu@gmail.com</a>.
                 </p>
-                <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E5E5E1]/50 font-sans text-xs space-y-2">
-                  <p><strong>Nazwa firmy:</strong> Fabryka Tekstu</p>
-                  <p><strong>Siedziba:</strong> Warszawa, Polska</p>
-                  <p><strong>Kontakt:</strong> <a href="mailto:fabryka.t3kstu@gmail.com" className="text-[#D4A373] hover:underline font-bold">fabryka.t3kstu@gmail.com</a></p>
+                <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E5E5E1]/50 font-sans text-xs space-y-1.5 text-slate-700">
+                  <p><strong>Administrator:</strong> Paweł Kmiecik</p>
+                  <p><strong>Forma działalności:</strong> Działalność nierejestrowana pod marką Fabryka Tekstu</p>
+                  <p><strong>Adres:</strong> ul. Skrzatów 19/2, 03-259 Warszawa, Polska</p>
+                  <p><strong>Kontakt e-mail:</strong> <a href="mailto:fabryka.t3kstu@gmail.com" className="text-[#D4A373] hover:underline font-bold">fabryka.t3kstu@gmail.com</a></p>
                 </div>
               </div>
             </div>
@@ -181,8 +189,8 @@ export default function RegulaminContent() {
                     </tr>
                     <tr>
                       <td className="py-3 px-2 font-bold text-slate-800">👶 Imię dziecka</td>
-                      <td className="py-3 px-2">Wyłącznie personalizacja tekstu bajki oraz ilustracji.</td>
-                      <td className="py-3 px-2 text-[#D4A373] font-semibold">Usuwane bezpowrotnie z bazy po 90 dniach.</td>
+                      <td className="py-3 px-2">Wyłącznie personalizacja tekstu bajki oraz ilustracji (dane przetwarzane ze szczególną ostrożnością w celu realizacji umowy – art. 6 ust. 1 lit. b RODO).</td>
+                      <td className="py-3 px-2 text-[#D4A373] font-semibold">Retencjonowane w bazie przez maksymalnie 90 dni, po czym bezpowrotnie usuwane.</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-2 font-bold text-slate-800">💳 Płatności</td>
@@ -203,18 +211,18 @@ export default function RegulaminContent() {
             <div className="bg-white rounded-2xl shadow-xs p-6 md:p-8 border border-[#E5E5E1] border-l-4 border-l-[#D4A373] space-y-4">
               <h3 className="font-serif text-lg font-black text-[#1A1C23] flex items-center gap-2">
                 <ShieldAlert className="w-5 h-5 text-[#D4A373]" />
-                III. Dane dzieci – szczególna ochrona
+                III. Dane dzieci – szczególna ostrożność (RODO)
               </h3>
               <div className="bg-[#FAF9F6] border border-[#E5E5E1] p-5 rounded-xl flex gap-4 text-xs md:text-sm text-slate-600 leading-relaxed font-serif">
                 <div className="w-10 h-10 rounded-full bg-[#D4A373]/10 flex items-center justify-center shrink-0 text-[#D4A373]">
                   <Shield className="w-5 h-5" fill="currentColor" fillOpacity={0.1} />
                 </div>
                 <div className="space-y-2">
-                  <p className="font-bold text-slate-800">Imię dziecka traktujemy jako dane szczególnie wrażliwe:</p>
+                  <p className="font-bold text-slate-800">Imię dziecka to dane przetwarzane ze szczególną ostrożnością w celu realizacji umowy - art. 6 ust. 1 lit. b RODO:</p>
                   <ul className="list-disc pl-5 space-y-1.5 text-slate-600 font-sans text-xs">
-                    <li>Nie wykorzystujemy podanych imion do trenowania jakichkolwiek modeli AI.</li>
+                    <li>Dane przesyłane przez API do modeli AI (Google Gemini, Replicate) nie są wykorzystywane do trenowania publicznych modeli sztucznej inteligencji.</li>
                     <li>Nie przekazujemy ich żadnym podmiotom zewnętrznym w celach marketingowych czy reklamowych.</li>
-                    <li>Przechowujemy je w bazie wyłącznie na czas trwania sesji i w archiwum (max 90 dni), aby umożliwić ponowny wydruk bajki.</li>
+                    <li>Dane w bazie są retencjonowane przez maksymalnie 90 dni wyłącznie w celu umożliwienia pobrania i ponownego wydruku bajki przez Użytkownika, po czym są trwale usuwane.</li>
                   </ul>
                 </div>
               </div>
@@ -233,8 +241,8 @@ export default function RegulaminContent() {
                 <ul className="list-disc pl-5 space-y-1.5 font-sans text-xs text-slate-500">
                   <li><strong className="text-slate-700">Supabase</strong> – baza danych oraz logowanie (bezpieczne serwery na terenie Unii Europejskiej).</li>
                   <li><strong className="text-slate-700">Stripe</strong> – autoryzacja płatności elektronicznych (pełny standard PCI-DSS).</li>
-                  <li><strong className="text-slate-700">Google Gemini</strong> – bezpieczne generowanie tekstu spersonalizowanych bajek.</li>
-                  <li><strong className="text-slate-700">Replicate</strong> – generowanie ilustracji do kolorowanek.</li>
+                  <li><strong className="text-slate-700">Google Gemini</strong> – bezpieczne generowanie tekstu spersonalizowanych bajek przez API (dane nie służą do trenowania modeli publicznych).</li>
+                  <li><strong className="text-slate-700">Replicate</strong> – generowanie ilustracji do kolorowanek przez API (dane nie służą do trenowania modeli publicznych).</li>
                 </ul>
               </div>
             </div>

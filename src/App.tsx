@@ -1484,6 +1484,9 @@ export default function App() {
               <p className="text-sm text-slate-400 mt-16 font-mono">
                 Wiek: {preferences.childAge} {preferences.childAge === 5 ? "lat" : [2, 3, 4].includes(preferences.childAge % 10) && ![12, 13, 14].includes(preferences.childAge) ? "lata" : "lat"} • Kraina: {preferences.world} • Postać: {preferences.archetype}
               </p>
+              <p className="text-xs text-slate-400 mt-8 font-sans italic">
+                Wygenerowano w serwisie Malowana Opowieść przy użyciu sztucznej inteligencji.
+              </p>
             </div>
           </div>
           
@@ -1534,7 +1537,11 @@ export default function App() {
                 <p className="italic font-bold text-slate-900 leading-relaxed px-4 text-sm" style={{ fontSize: '11pt' }}>
                   "{page.story_text}"
                 </p>
-                <span className="block mt-2 text-[10px] text-slate-400 font-mono">Strona {idx + 1}</span>
+                <div className="mt-2 flex items-center justify-center gap-2 text-[10px] text-slate-400 font-mono">
+                  <span>Strona {idx + 1}</span>
+                  <span>•</span>
+                  <span className="font-sans italic text-[8.5px]">Wygenerowano w serwisie Malowana Opowieść przy użyciu sztucznej inteligencji.</span>
+                </div>
               </div>
             </div>
           );
